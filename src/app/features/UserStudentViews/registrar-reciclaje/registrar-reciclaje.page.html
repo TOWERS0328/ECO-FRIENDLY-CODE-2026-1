@@ -1,0 +1,143 @@
+<!-- Page Header -->
+<div class="page-header">
+  <h1 class="page-title">Registrar Reciclaje</h1>
+  <p class="page-subtitle">Selecciona los materiales que deseas reciclar</p>
+</div>
+
+<!-- Search + Filters Bar -->
+<div class="search-filter-bar card">
+  <div class="search-input-wrapper">
+    <ion-icon name="search-outline"></ion-icon>
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar residuos..."
+      [(ngModel)]="searchQuery"
+      (input)="filterMaterials()"
+    />
+  </div>
+
+  <div class="filter-divider">
+    <ion-icon name="filter-outline"></ion-icon>
+  </div>
+
+  <div class="filter-tabs">
+    <button
+      *ngFor="let cat of categories"
+      class="filter-tab"
+      [class.active]="activeCategory === cat.key"
+      (click)="setCategory(cat.key)">
+      {{ cat.label }}
+    </button>
+  </div>
+
+  <button class="btn-canasta" (click)="toggleCanasta()">
+    <ion-icon name="cart-outline"></ion-icon>
+    Canasta
+    <span class="canasta-count" *ngIf="canasta.length > 0">{{ canasta.length }}</span>
+  </button>
+</div>
+
+<!-- Main Content: Grid + Sidebar -->
+<div class="content-grid">
+
+  <!-- Materials Grid -->
+  <div class="materials-grid">
+    <div
+      class="material-card"
+      *ngFor="let material of filteredMaterials"
+      [class.in-canasta]="isInCanasta(material.id)">
+
+      <div class="material-image">
+        <img [src]="material.image" [alt]="material.name" loading="lazy" aria-label="f"/>
+        <span class="material-category-badge" [class]="material.categoryClass">
+          {{ material.category }}
+        </span>
+      </div>
+
+      <div class="material-body">
+        <h3 class="material-name">{{ material.name }}</h3>
+        <p class="material-category-label" [class]="material.categoryClass + '-text'">
+          {{ material.category }}
+        </p>
+        <p class="material-desc">{{ material.description }}</p>
+
+        <div class="material-footer">
+          <span class="material-points">
+            Puntos: <strong>{{ material.points }} pts/kg</strong>
+          </span>
+          <button
+            class="btn-agregar"
+            [class.added]="isInCanasta(material.id)"
+            (click)="toggleMaterial(material)">
+            <ion-icon [name]="isInCanasta(material.id) ? 'checkmark-outline' : 'add-outline'"></ion-icon>
+            {{ isInCanasta(material.id) ? 'Agregado' : 'Agregar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-materials" *ngIf="filteredMaterials.length === 0">
+      <ion-icon name="search-outline"></ion-icon>
+      <p>No se encontraron materiales</p>
+    </div>
+  </div>
+
+  <!-- Sidebar: Canasta -->
+  <div class="canasta-sidebar card" [class.open]="canastaOpen">
+    <div class="canasta-header">
+      <ion-icon name="cart-outline"></ion-icon>
+      <h3>Mi Canasta</h3>
+    </div>
+
+    <!-- Empty canasta -->
+    <div class="canasta-empty" *ngIf="canasta.length === 0">
+      <ion-icon name="cart-outline"></ion-icon>
+      <p>Tu canasta está vacía</p>
+    </div>
+
+    <!-- Canasta items -->
+    <div class="canasta-items" *ngIf="canasta.length > 0">
+      <div class="canasta-item" *ngFor="let item of canasta">
+        <div class="canasta-item-info">
+          <span class="canasta-item-name">{{ item.name }}</span>
+          <span class="canasta-item-pts">{{ item.points }} pts/kg</span>
+        </div>
+        <div class="canasta-item-controls">
+          <div class="weight-input-wrapper">
+            <input
+              type="number"
+              class="weight-input"
+              [(ngModel)]="item.weight"
+              min="0.1"
+              step="0.1"
+              placeholder="kg"
+            />
+            <span class="weight-unit">kg</span>
+          </div>
+          <button class="btn-remove" (click)="removeFromCanasta(item.id)" aria-label="e">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="canasta-summary">
+        <div class="summary-row">
+          <span>Total materiales</span>
+          <span>{{ canasta.length }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Puntos estimados</span>
+          <span>~{{ estimatedPoints }} pts</span>
+        </div>
+      </div>
+
+      <button class="btn-registrar" (click)="registrarReciclaje()">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        Registrar Reciclaje
+      </button>
+    </div>
+  </div>
+
+</div>

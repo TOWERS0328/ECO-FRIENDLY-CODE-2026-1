@@ -1,0 +1,292 @@
+<ion-content [fullscreen]="true" class="landing-content">
+
+ <!-- ══════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════ -->
+  <nav class="eco-navbar" [class.scrolled]="isScrolled">
+    <div class="navbar-inner">
+      <div class="navbar-logo">
+        <ion-icon name="leaf" class="logo-leaf"></ion-icon>
+        <span>EcoFriendly Code</span>
+      </div>
+
+      <!-- Botón hamburguesa para móvil -->
+      <button class="navbar-toggle"
+              aria-label="t"
+              (click)="toggleMobileMenu()"
+              [attr.aria-label]="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'"
+              [attr.aria-expanded]="mobileMenuOpen"
+              *ngIf="isMobile">
+        <ion-icon [name]="mobileMenuOpen ? 'close-outline' : 'menu-outline'"></ion-icon>
+      </button>
+
+      <!-- NUEVO CONTENEDOR AGRUPADO -->
+      <div class="navbar-menu" [class.is-open]="mobileMenuOpen || !isMobile">
+        <ul class="navbar-links">
+          <li *ngFor="let link of navLinks">
+            <a (click)="scrollTo(link.anchor); closeMobileMenu()"
+               [class.active]="activeSection === link.anchor">
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+
+        <div class="navbar-actions">
+          <button class="btn-ghost" (click)="goToLogin()">Iniciar Sesión</button>
+          <button class="btn-filled" (click)="goToRegister()">Registrarse</button>
+          <button class="btn-manual" (click)="goToManual()">Manual del Usuario</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section class="hero-section" id="inicio">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+    </div>
+
+    <div class="hero-inner">
+      <!-- Left -->
+      <div class="hero-left">
+        <div class="hero-badge">
+          <ion-icon name="leaf-outline"></ion-icon>
+          Plataforma Universitaria de Reciclaje
+        </div>
+
+        <h1 class="hero-headline">
+          Recicla, Acumula Puntos<br>y Gana Premios
+        </h1>
+
+        <p class="hero-subtitle">
+          Únete a la comunidad estudiantil más eco-friendly. Registra tus
+          reciclajes, acumula puntos y canjéalos por increíbles recompensas.
+        </p>
+
+        <div class="hero-ctas">
+          <button class="btn-hero-primary" (click)="goToRegister()">
+            Comenzar Ahora <ion-icon name="arrow-forward-outline"></ion-icon>
+          </button>
+          <button class="btn-hero-ghost" (click)="scrollTo('como-funciona')">
+            Ver Cómo Funciona
+          </button>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="hero-stat">
+            <ion-icon name="refresh-outline"></ion-icon>
+            1,250+ Estudiantes Activos
+          </div>
+          <div class="hero-stat">
+            <ion-icon name="cube-outline"></ion-icon>
+            45.5 Ton Material Reciclado
+          </div>
+          <div class="hero-stat">
+            <ion-icon name="trophy-outline"></ion-icon>
+            3,200+ Premios Canjeados
+          </div>
+        </div>
+      </div>
+
+      <!-- Right - Dashboard mockup -->
+      <div class="hero-right">
+        <div class="dashboard-mockup">
+          <div class="mockup-header">
+            <ion-icon name="grid-outline"></ion-icon>
+            <span>Dashboard</span>
+          </div>
+          <div class="mockup-cards">
+            <div class="mockup-card green">
+              <ion-icon name="trophy-outline"></ion-icon>
+              <div class="mockup-value">850</div>
+              <div class="mockup-label">Puntos</div>
+            </div>
+            <div class="mockup-card orange">
+              <ion-icon name="cloud-outline"></ion-icon>
+              <div class="mockup-value">12.5</div>
+              <div class="mockup-label">kg CO₂</div>
+            </div>
+          </div>
+          <div class="mockup-activity">
+            <div class="mockup-activity-title">Reciclajes Recientes</div>
+            <div class="mockup-activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-info">
+                <span class="activity-name">Plástico</span>
+                <span class="activity-weight">2.5 kg</span>
+              </div>
+              <span class="activity-pts">+50 pts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CÓMO FUNCIONA
+  ══════════════════════════════════════ -->
+  <section class="steps-section" id="como-funciona">
+    <div class="section-inner">
+      <h2 class="section-title">¿Cómo Funciona?</h2>
+      <p class="section-subtitle">En solo 3 pasos empieza a hacer la diferencia</p>
+
+      <div class="steps-row">
+        <div class="step-card" *ngFor="let step of steps; let i = index">
+          <div class="step-icon-wrap" [class]="step.color">
+            <ion-icon [name]="step.icon"></ion-icon>
+          </div>
+          <div class="step-badge" [class]="step.color">{{ step.step }}</div>
+          <h3 class="step-title">{{ step.title }}</h3>
+          <p class="step-desc">{{ step.desc }}</p>
+
+          <!-- Connector (not on last) -->
+          <div class="step-connector" *ngIf="i < steps.length - 1"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       IMPACTO AMBIENTAL
+  ══════════════════════════════════════ -->
+  <section class="impact-section" id="impacto">
+    <div class="section-inner">
+      <h2 class="section-title green-text">Nuestro Impacto Ambiental</h2>
+
+      <div class="impact-grid">
+        <div class="impact-card"
+             *ngFor="let stat of stats; let i = index"
+             [class]="statColors[i]">
+          <ion-icon [name]="stat.icon"></ion-icon>
+          <div class="impact-value">{{ stat.value }}</div>
+          <div class="impact-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PREMIOS
+  ══════════════════════════════════════ -->
+  <section class="rewards-section" id="premios">
+    <div class="section-inner">
+      <h2 class="section-title green-text">Premios que Puedes Ganar</h2>
+      <p class="section-subtitle">Canjea tus puntos por recompensas eco-friendly</p>
+
+      <div class="rewards-grid">
+        <div class="reward-card" *ngFor="let r of rewards">
+          <div class="reward-img-placeholder">
+            <ion-icon [name]="r.icon" [class]="r.iconColor + '-icon'"></ion-icon>
+          </div>
+          <div class="reward-body">
+            <span class="reward-category" [class]="r.categoryColor + '-chip'">
+              {{ r.category }}
+            </span>
+            <h4 class="reward-name">{{ r.name }}</h4>
+            <p class="reward-desc">{{ r.desc }}</p>
+            <div class="reward-points">
+              <ion-icon name="trophy-outline"></ion-icon>
+              {{ r.points }} puntos
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rewards-cta">
+        <p>¿Quieres ver todos los premios?</p>
+        <button class="btn-filled" (click)="goToRegister()">
+          Ver Catálogo Completo <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TESTIMONIOS
+  ══════════════════════════════════════ -->
+  <section class="testimonials-section" id="contacto">
+    <div class="section-inner">
+      <h2 class="section-title green-text">Lo que dicen nuestros estudiantes</h2>
+
+      <div class="testimonials-row">
+        <div class="testimonial-card" *ngFor="let t of testimonials">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div class="testimonial-meta">
+              <span class="testimonial-name">{{ t.name }}</span>
+              <span class="testimonial-university">{{ t.university }}</span>
+              <span class="level-chip">{{ t.level }}</span>
+            </div>
+          </div>
+          <div class="stars">
+            <ion-icon name="star" *ngFor="let s of starsArray(t.stars)"></ion-icon>
+          </div>
+          <p class="testimonial-quote">{{ t.quote }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FINAL CTA
+  ══════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2>¿Listo para marcar la diferencia?</h2>
+      <p>Únete a miles de estudiantes que ya están construyendo un futuro más sostenible</p>
+      <div class="cta-buttons">
+        <button class="btn-cta-white" (click)="goToRegister()">
+          Registrarse Gratis <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+        <button class="btn-cta-outline" (click)="goToLogin()">
+          Iniciar Sesión
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="eco-footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <ion-icon name="leaf"></ion-icon>
+          <span>EcoFriendly Code</span>
+        </div>
+        <p>Haciendo del reciclaje un hábito universitario</p>
+      </div>
+
+      <nav class="footer-links">
+        <a (click)="scrollTo('inicio')">Inicio</a>
+        <a (click)="scrollTo('como-funciona')">Cómo Funciona</a>
+        <a (click)="scrollTo('premios')">Premios</a>
+        <a (click)="scrollTo('contacto')">Contacto</a>
+      </nav>
+
+      <div class="footer-social">
+        <button class="social-btn" title="Instagram" aria-label="Instagram">
+          <ion-icon name="logo-instagram"></ion-icon>
+        </button>
+        <button class="social-btn" title="Twitter" aria-label="Twitter">
+          <ion-icon name="logo-twitter"></ion-icon>
+        </button>
+        <button class="social-btn" title="LinkedIn" aria-label="LinkedIn">
+          <ion-icon name="logo-linkedin"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2024 EcoFriendly Code · Todos los derechos reservados</span>
+    </div>
+  </footer>
+
+</ion-content>

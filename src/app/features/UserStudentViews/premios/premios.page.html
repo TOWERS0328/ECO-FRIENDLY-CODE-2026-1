@@ -1,0 +1,162 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="header-left">
+    <h1 class="page-title">Catálogo de Premios</h1>
+    <p class="page-subtitle">Canjea tus puntos por increíbles recompensas</p>
+  </div>
+  <div class="header-points">
+    <span class="points-label">Tus puntos disponibles</span>
+    <div class="points-value">
+      <ion-icon name="trophy-outline"></ion-icon>
+      <strong>{{ availablePoints | number }}</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Search + Filters -->
+<div class="search-filter-bar card">
+  <div class="search-input-wrapper">
+    <ion-icon name="search-outline"></ion-icon>
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar premios..."
+      [(ngModel)]="searchQuery"
+      (input)="filterPremios()"
+    />
+  </div>
+
+  <div class="filter-tabs">
+    <button
+      *ngFor="let cat of categories"
+      class="filter-tab"
+      [class.active]="activeCategory === cat.key"
+      (click)="setCategory(cat.key)">
+      {{ cat.label }}
+    </button>
+  </div>
+
+  <button class="btn-carrito" (click)="toggleCarrito()">
+    <ion-icon name="bag-outline"></ion-icon>
+    Carrito
+    <span class="carrito-count" *ngIf="carrito.length > 0">{{ carrito.length }}</span>
+  </button>
+</div>
+
+<!-- Main Grid -->
+<div class="content-grid">
+
+  <!-- Premios Grid -->
+  <div class="premios-grid">
+
+    <div
+      class="premio-card"
+      *ngFor="let premio of filteredPremios"
+      [class.agotado]="premio.stock === 0">
+
+      <div class="premio-image">
+        <img [src]="premio.image" [alt]="premio.name" loading="lazy" aria-label="Imagen de {{ premio.name }}" />
+
+        <!-- Badge Agotado -->
+        <span class="badge-agotado" *ngIf="premio.stock === 0">Agotado</span>
+
+        <!-- Badge Quedan X -->
+        <span class="badge-stock" *ngIf="premio.stock > 0 && premio.stock <= 10">
+          Quedan {{ premio.stock }}
+        </span>
+      </div>
+
+      <div class="premio-body">
+        <h3 class="premio-name">{{ premio.name }}</h3>
+        <p class="premio-desc">{{ premio.description }}</p>
+
+        <span class="premio-category-badge">{{ premio.category }}</span>
+
+        <div class="premio-footer">
+          <div class="premio-points">
+            <ion-icon name="trophy-outline"></ion-icon>
+            <strong>{{ premio.points | number }}</strong>
+            <span>puntos</span>
+          </div>
+
+          <button
+            class="btn-agregar"
+            [class.in-carrito]="isInCarrito(premio.id)"
+            [class.no-disponible]="premio.stock === 0 || premio.points > availablePoints"
+            [disabled]="premio.stock === 0"
+            (click)="toggleCarrito2(premio)">
+            <ion-icon *ngIf="premio.stock === 0" name="lock-closed-outline"></ion-icon>
+            <ion-icon *ngIf="premio.stock > 0 && !isInCarrito(premio.id)" name="add-outline"></ion-icon>
+            <ion-icon *ngIf="isInCarrito(premio.id)" name="checkmark-outline"></ion-icon>
+            <span *ngIf="premio.stock === 0">No Disponible</span>
+            <span *ngIf="premio.stock > 0 && !isInCarrito(premio.id)">Agregar al Carrito</span>
+            <span *ngIf="isInCarrito(premio.id)">En el Carrito</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-premios" *ngIf="filteredPremios.length === 0">
+      <ion-icon name="gift-outline"></ion-icon>
+      <p>No se encontraron premios</p>
+    </div>
+  </div>
+
+  <!-- Sidebar Carrito -->
+  <div class="carrito-sidebar card" [class.open]="carritoOpen">
+    <div class="carrito-header">
+      <ion-icon name="bag-outline"></ion-icon>
+      <h3>Mi Carrito</h3>
+    </div>
+
+    <!-- Empty -->
+    <div class="carrito-empty" *ngIf="carrito.length === 0">
+      <ion-icon name="bag-outline"></ion-icon>
+      <p>Tu carrito está vacío</p>
+    </div>
+
+    <!-- Items -->
+    <div class="carrito-items" *ngIf="carrito.length > 0">
+      <div class="carrito-item" *ngFor="let item of carrito">
+        <div class="carrito-item-img">
+          <img [src]="item.image" [alt]="item.name" aria-label="Imagen de {{ item.name }}"/>
+        </div>
+        <div class="carrito-item-info">
+          <span class="carrito-item-name">{{ item.name }}</span>
+          <span class="carrito-item-pts">
+            <ion-icon name="trophy-outline"></ion-icon>
+            {{ item.points | number }} pts
+          </span>
+        </div>
+        <button class="btn-remove" (click)="removeFromCarrito(item.id)" aria-label="Eliminar del carrito">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+
+      <div class="carrito-summary">
+        <div class="summary-row">
+          <span>Premios seleccionados</span>
+          <span>{{ carrito.length }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total a canjear</span>
+          <span>{{ totalPoints | number }} pts</span>
+        </div>
+        <div class="summary-row remaining" [class.insufficient]="availablePoints - totalPoints < 0">
+          <span>Puntos restantes</span>
+          <span>{{ availablePoints - totalPoints | number }} pts</span>
+        </div>
+      </div>
+
+      <button
+        class="btn-canjear"
+        [disabled]="totalPoints > availablePoints"
+        (click)="canjearPremios()">
+        <ion-icon name="gift-outline"></ion-icon>
+        Canjear Premios
+      </button>
+    </div>
+  </div>
+
+</div>

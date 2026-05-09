@@ -1,0 +1,200 @@
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- Configuracion Page - EcoFriendly Code -->
+<!-- ══════════════════════════════════════════════════════════ -->
+
+<!-- Loading State -->
+<div class="loading-state" *ngIf="isLoading">
+  <ion-spinner name="crescent" color="primary"></ion-spinner>
+  <p>Cargando configuración...</p>
+</div>
+
+<!-- Error State -->
+<div class="error-state" *ngIf="error && !isLoading">
+  <ion-icon name="alert-circle" color="danger"></ion-icon>
+  <p>{{ error }}</p>
+  <button class="retry-btn" (click)="retryLoad()">
+    <ion-icon name="refresh"></ion-icon>
+    Reintentar
+  </button>
+</div>
+
+<!-- Content (solo cuando hay datos) -->
+<ng-container *ngIf="!isLoading && !error">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <ion-icon name="settings-outline"></ion-icon>
+      <div>
+        <h1 class="page-title">Configuración</h1>
+        <p class="page-subtitle">Personaliza tu experiencia en la plataforma</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Saving indicator -->
+  <div class="saving-indicator" *ngIf="isSaving">
+    <ion-spinner name="dots"></ion-spinner>
+    <span>Guardando cambios...</span>
+  </div>
+
+  <!-- Sección Cuenta -->
+  <div class="config-section card">
+    <div class="section-header">
+      <ion-icon name="person-outline"></ion-icon>
+      <h2>Cuenta</h2>
+    </div>
+
+    <div class="section-content">
+      <div class="user-info" *ngIf="userProfile">
+        <div class="user-avatar">
+          <img
+          aria-label="Avatar de usuario"
+          [src]="userProfile.profileImage || 'assets/default-avatar.png'"
+               [alt]="userProfile.name"
+               onerror="this.src='assets/default-avatar.png'">
+        </div>
+        <div class="user-details">
+          <h3>{{ userProfile.name }}</h3>
+          <p>{{ userProfile.email }}</p>
+          <p class="user-university">{{ userProfile.university }} • {{ userProfile.career }}</p>
+        </div>
+      </div>
+
+      <button class="btn-primary" (click)="editarPerfil()">
+        <ion-icon name="create-outline"></ion-icon>
+        Editar Perfil
+      </button>
+      <p class="section-description">
+        Actualiza tu información personal, foto de perfil y más
+      </p>
+    </div>
+  </div>
+
+  <!-- Sección Notificaciones -->
+  <div class="config-section card">
+    <div class="section-header">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <h2>Notificaciones</h2>
+    </div>
+
+    <div class="section-content">
+      <div class="notification-item" *ngFor="let notification of notifications">
+        <div class="notification-info">
+          <h3>{{ notification.title }}</h3>
+          <p>{{ notification.description }}</p>
+        </div>
+        <label class="toggle-switch">
+          <input
+          aria-label="Activar/desactivar notificación"
+            type="checkbox"
+            [checked]="notification.enabled"
+            (change)="toggleNotification(notification)"
+            [disabled]="isSaving"
+            [attr.aria-label]="'Activar/desactivar ' + notification.title"
+          >
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección Seguridad -->
+  <div class="config-section card">
+    <div class="section-header">
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <h2>Seguridad</h2>
+    </div>
+
+    <div class="section-content">
+      <button class="btn-primary" (click)="cambiarContrasena()">
+        <ion-icon name="key-outline"></ion-icon>
+        Cambiar Contraseña
+      </button>
+      <p class="section-description">
+        Te recomendamos cambiar tu contraseña periódicamente por seguridad
+      </p>
+    </div>
+  </div>
+
+  <!-- Sección Apariencia -->
+  <div class="config-section card">
+    <div class="section-header">
+      <ion-icon name="color-palette-outline"></ion-icon>
+      <h2>Apariencia</h2>
+    </div>
+
+    <div class="section-content">
+      <p class="section-label">Tema</p>
+      <div class="theme-selector">
+        <button
+          class="theme-option"
+          [class.active]="currentTheme === 'light'"
+          (click)="setTheme('light')"
+          [disabled]="isSaving"
+        >
+          <ion-icon name="sunny-outline"></ion-icon>
+          <span>Claro</span>
+        </button>
+
+        <button
+          class="theme-option"
+          [class.active]="currentTheme === 'dark'"
+          (click)="setTheme('dark')"
+          [disabled]="true"
+          aria-label="Seleccionar tema oscuro"
+        >
+          <ion-icon name="moon-outline"></ion-icon>
+          <span>Oscuro</span>
+          <span class="badge">Próximamente</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección Idioma -->
+  <div class="config-section card">
+    <div class="section-header">
+      <ion-icon name="globe-outline"></ion-icon>
+      <h2>Idioma</h2>
+    </div>
+
+    <div class="section-content">
+      <select
+      aria-label="Seleccionar idioma"
+        class="language-select"
+        [value]="currentLanguage"
+        (change)="onLanguageChange($event)"
+        [disabled]="isSaving"
+        [attr.aria-label]="'Seleccionar idioma'"
+      >
+        <option *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.flag }} {{ lang.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Zona de Peligro -->
+  <div class="config-section danger-zone card">
+    <div class="section-header">
+      <ion-icon name="warning-outline"></ion-icon>
+      <h2 class="danger-title">Zona de Peligro</h2>
+    </div>
+
+    <div class="section-content">
+      <button
+        class="btn-danger"
+        (click)="eliminarCuenta()"
+        [disabled]="isSaving"
+      >
+        <ion-icon name="trash-outline"></ion-icon>
+        Eliminar Cuenta
+      </button>
+      <p class="danger-description">
+        ⚠️ Esta acción es irreversible y eliminará todos tus datos permanentemente
+      </p>
+    </div>
+  </div>
+
+</ng-container>

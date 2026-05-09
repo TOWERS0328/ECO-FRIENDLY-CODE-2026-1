@@ -1,0 +1,317 @@
+<ion-content class="register-content">
+  <div class="register-wrapper">
+
+    <div class="register-card">
+
+      <!-- Logo con animación -->
+      <div class="register-logo" (click)="goToLanding()">
+        <div class="logo-icon">
+          <ion-icon name="leaf"></ion-icon>
+        </div>
+        <span>EcoFriendly Code</span>
+      </div>
+
+      <!-- Header con mejor jerarquía -->
+      <div class="register-header">
+        <h1 class="register-title">Crear cuenta</h1>
+        <p class="register-subtitle">
+          Únete y comienza a generar impacto ambiental positivo 🌱
+        </p>
+      </div>
+
+      <!-- Progress indicator -->
+      <div class="progress-steps" *ngIf="showProgress">
+        <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+          <div class="step-circle">1</div>
+          <span class="step-label">Datos</span>
+        </div>
+        <div class="step-line" [class.completed]="currentStep > 1"></div>
+        <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+          <div class="step-circle">2</div>
+          <span class="step-label">Carrera</span>
+        </div>
+        <div class="step-line" [class.completed]="currentStep > 2"></div>
+        <div class="step" [class.active]="currentStep >= 3">
+          <div class="step-circle">3</div>
+          <span class="step-label">Seguridad</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form class="register-form" (ngSubmit)="onRegister()">
+
+        <!-- Cédula -->
+        <div class="input-group" [class.error]="cedulaError" [class.filled]="cedula">
+          <ion-icon name="card-outline" class="input-icon"></ion-icon>
+          <div class="input-wrapper">
+            <label for="cedula" class="floating-label">Cédula</label>
+            <input
+              id="cedula"
+              type="text"
+              placeholder="1234567890"
+              [(ngModel)]="cedula"
+              name="cedula"
+              (input)="validateCedula()"
+              (blur)="validateCedula()"
+              maxlength="10"
+              [attr.aria-invalid]="cedulaError"
+              [attr.aria-describedby]="cedulaError ? 'cedula-error' : null"/>
+          </div>
+          <ion-icon
+            *ngIf="cedula && !cedulaError"
+            name="checkmark-circle"
+            class="validation-icon success"></ion-icon>
+        </div>
+
+        <!-- Nombre -->
+        <div class="input-group" [class.error]="nombreError" [class.filled]="nombre">
+          <ion-icon name="person-outline" class="input-icon"></ion-icon>
+          <div class="input-wrapper">
+            <label for="nombre" class="floating-label">Nombre</label>
+            <input
+              id="nombre"
+              type="text"
+              placeholder="Juan"
+              [(ngModel)]="nombre"
+              name="nombre"
+              (input)="clearFieldError('nombre')"
+              (blur)="validateNombre()"
+              [attr.aria-invalid]="nombreError"
+              [attr.aria-describedby]="nombreError ? 'nombre-error' : null"/>
+          </div>
+          <ion-icon
+            *ngIf="nombre && !nombreError"
+            name="checkmark-circle"
+            class="validation-icon success"></ion-icon>
+        </div>
+
+        <!-- Apellido -->
+        <div class="input-group" [class.error]="apellidoError" [class.filled]="apellido">
+          <ion-icon name="person-outline" class="input-icon"></ion-icon>
+          <div class="input-wrapper">
+            <label for="apellido" class="floating-label">Apellido</label>
+            <input
+              id="apellido"
+              type="text"
+              placeholder="Pérez"
+              [(ngModel)]="apellido"
+              name="apellido"
+              (input)="clearFieldError('apellido')"
+              (blur)="validateApellido()"
+              [attr.aria-invalid]="apellidoError"
+              [attr.aria-describedby]="apellidoError ? 'apellido-error' : null"/>
+          </div>
+          <ion-icon
+            *ngIf="apellido && !apellidoError"
+            name="checkmark-circle"
+            class="validation-icon success"></ion-icon>
+        </div>
+        <!-- Género -->
+<div class="input-group select-group" [class.error]="generoError" [class.filled]="genero">
+  <ion-icon name="person-outline" class="input-icon"></ion-icon>
+  <div class="input-wrapper">
+    <label for="genero" class="floating-label">Género</label>
+    <select
+      id="genero"
+      [(ngModel)]="genero"
+      name="genero"
+      (change)="clearFieldError('genero')"
+      (blur)="validateGenero()"
+      [attr.aria-invalid]="generoError">
+
+      <option value="" disabled>Selecciona tu género</option>
+      <option value="masculino">Masculino</option>
+      <option value="femenino">Femenino</option>
+      <option value="otro">Otro</option>
+    </select>
+  </div>
+  <ion-icon name="chevron-down-outline" class="select-icon"></ion-icon>
+</div>
+
+        <!-- Email -->
+        <div class="input-group" [class.error]="emailError" [class.filled]="email">
+          <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+          <div class="input-wrapper">
+            <label for="email" class="floating-label">Correo universitario</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="tu.nombre@universidad.edu"
+              [(ngModel)]="email"
+              name="email"
+              (input)="clearFieldError('email')"
+              (blur)="validateEmail()"
+              autocomplete="email"
+              [attr.aria-invalid]="emailError"
+              [attr.aria-describedby]="emailError ? 'email-error' : null"/>
+          </div>
+          <ion-icon
+            *ngIf="email && !emailError"
+            name="checkmark-circle"
+            class="validation-icon success"></ion-icon>
+        </div>
+
+        <!-- Carrera -->
+        <div class="input-group select-group" [class.error]="carreraError" [class.filled]="carrera">
+          <ion-icon name="school-outline" class="input-icon"></ion-icon>
+          <div class="input-wrapper">
+            <label for="carrera" class="floating-label">Carrera</label>
+            <select
+              id="carrera"
+              [(ngModel)]="carrera"
+              name="carrera"
+              (change)="clearFieldError('carrera')"
+              (blur)="validateCarrera()"
+              [attr.aria-invalid]="carreraError"
+              [attr.aria-describedby]="carreraError ? 'carrera-error' : null">
+              <option value="" disabled>Selecciona tu carrera</option>
+
+              <optgroup label="Profesionales">
+                <option value="ing-sistemas">Ingeniería de Sistemas</option>
+                <option value="ing-industrial">Ingeniería Industrial</option>
+                <option value="admin-empresas">Administración de Empresas</option>
+                <option value="contaduria">Contaduría Pública</option>
+                <option value="derecho">Derecho</option>
+              </optgroup>
+
+              <optgroup label="Tecnologías">
+                <option value="dev-software">Desarrollo de Software</option>
+                <option value="gestion-calidad">Gestión de Calidad</option>
+                <option value="turismo">Servicios Turísticos</option>
+              </optgroup>
+
+              <optgroup label="Especializaciones">
+                <option value="ingles">Enseñanza del Inglés</option>
+                <option value="eventos">Gestión de Eventos</option>
+                <option value="derecho-admin">Derecho Administrativo</option>
+              </optgroup>
+            </select>
+          </div>
+          <ion-icon name="chevron-down-outline" class="select-icon"></ion-icon>
+          <ion-icon
+            *ngIf="carrera && !carreraError"
+            name="checkmark-circle"
+            class="validation-icon success"></ion-icon>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group" [class.error]="passwordError" [class.filled]="password">
+          <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+          <div class="input-wrapper">
+            <label for="password" class="floating-label">Contraseña</label>
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="••••••••"
+              [(ngModel)]="password"
+              name="password"
+              (input)="validatePasswordStrength()"
+              autocomplete="new-password"
+              [attr.aria-invalid]="passwordError"
+              [attr.aria-describedby]="passwordError ? 'password-error' : 'password-strength'"/>
+          </div>
+          <button
+          aria-label="v"
+            type="button"
+            class="toggle-pwd"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </button>
+        </div>
+
+        <!-- Password strength indicator -->
+        <div class="password-strength" *ngIf="password" id="password-strength">
+          <div class="strength-bar">
+            <div class="strength-fill" [class]="passwordStrength"></div>
+          </div>
+          <div class="strength-text">
+            <span [class]="passwordStrength">
+              {{ passwordStrengthText }}
+            </span>
+            <span class="strength-requirements" *ngIf="passwordStrength !== 'strong'">
+              Usa al menos 8 caracteres con mayúsculas, números y símbolos
+            </span>
+          </div>
+        </div>
+
+        <!-- Términos y condiciones -->
+        <div class="checkbox-group" [class.error]="termsError">
+          <label class="checkbox-wrapper">
+            <input
+              type="checkbox"
+              [(ngModel)]="acceptTerms"
+              name="terms"
+              (change)="clearFieldError('terms')"
+              [attr.aria-invalid]="termsError"/>
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-label">
+              Acepto los
+              <a (click)="showTerms($event)" class="link">términos y condiciones</a>
+              y la
+              <a (click)="showPrivacy($event)" class="link">política de privacidad</a>
+            </span>
+          </label>
+        </div>
+
+        <!-- Error message general -->
+        <div class="error-msg" *ngIf="errorMessage" role="alert">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="btn-register"
+          [class.loading]="isLoading"
+          [disabled]="isLoading">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!isLoading">Crear cuenta</span>
+        </button>
+
+      </form>
+
+      <div class="divider"><span>o regístrate con</span></div>
+
+      <!-- Social buttons -->
+      <div class="social-row">
+        <button class="social-btn google" aria-label="Registrarse con Google" (click)="registerWithGoogle()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span class="social-label">Google</span>
+        </button>
+        <button class="social-btn apple" aria-label="Registrarse con Apple" (click)="registerWithApple()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          <span class="social-label">Apple</span>
+        </button>
+        <button class="social-btn facebook" aria-label="Registrarse con Facebook" (click)="registerWithFacebook()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          <span class="social-label">Facebook</span>
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <p class="login-link">
+          ¿Ya tienes cuenta? <a (click)="goToLogin()" tabindex="0" role="button">Inicia sesión</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="bg-decoration bg-decoration-1"></div>
+    <div class="bg-decoration bg-decoration-2"></div>
+  </div>
+
+
+</ion-content>

@@ -1,0 +1,136 @@
+<!-- Page Header -->
+<div class="page-header">
+  <h1 class="page-title">Mi Perfil</h1>
+  <p class="page-subtitle">Gestiona tu información personal</p>
+</div>
+
+<!-- Profile Grid -->
+<div class="profile-grid">
+
+  <!-- LEFT: Profile Card -->
+  <div class="profile-card card">
+    <div class="avatar-section">
+      <div class="avatar-large">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+      <h2 class="profile-name">{{ userName }}</h2>
+      <p class="profile-role">Estudiante Activo</p>
+      <div class="profile-badges">
+        <span class="badge-pill level">Nivel {{ userLevel }}</span>
+        <span class="badge-pill rank">🏆 Top {{ getRankPercentage() }}%</span>
+      </div>
+      <button class="btn-edit-photo">
+        <ion-icon name="pencil-outline"></ion-icon>
+        Editar Foto
+      </button>
+    </div>
+
+    <div class="profile-stats">
+      <div class="stat-row">
+        <span class="stat-row-label">Miembro desde</span>
+        <span class="stat-row-value">Ene 2024</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-row-label">Reciclajes</span>
+        <span class="stat-row-value">{{ totalReciclajes }} totales</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-row-label">Premios canjeados</span>
+        <span class="stat-row-value">{{ premiosCanjeados }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Info + Stats + Security -->
+  <div class="profile-right">
+
+    <!-- Personal Info -->
+    <div class="info-card card">
+      <div class="card-header">
+        <h3 class="card-title">Información Personal</h3>
+        <button class="btn-edit">
+          <ion-icon name="pencil-outline"></ion-icon>
+          Editar
+        </button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-field">
+          <label class="field-label">
+            <ion-icon name="person-outline"></ion-icon>
+            Nombre Completo
+          </label>
+          <div class="field-value">{{ fullName }}</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">
+            <ion-icon name="mail-outline"></ion-icon>
+            Correo Electrónico
+          </label>
+          <div class="field-value">{{ email }}</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">
+            <ion-icon name="id-card-outline"></ion-icon>
+            Código de Estudiante
+          </label>
+          <div class="field-value">{{ studentCode }}</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">
+            <ion-icon name="business-outline"></ion-icon>
+            Institución
+          </label>
+          <div class="field-value">{{ institution }}</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">
+            <ion-icon name="calendar-outline"></ion-icon>
+            Fecha de Registro
+          </label>
+          <div class="field-value">{{ registrationDate }}</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            Estado de Cuenta
+          </label>
+          <div class="field-value status-active">
+            <span class="status-dot"></span>
+            Activa
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact Stats -->
+    <div class="impact-stats">
+      <div class="impact-card green">
+        <ion-icon name="trophy-outline"></ion-icon>
+        <div class="impact-value">{{ totalPoints | number }}</div>
+        <div class="impact-label">Puntos Totales</div>
+      </div>
+      <div class="impact-card blue">
+        <ion-icon name="leaf-outline"></ion-icon>
+        <div class="impact-value">{{ materialReciclado }} kg</div>
+        <div class="impact-label">Material Reciclado</div>
+      </div>
+      <div class="impact-card orange">
+        <ion-icon name="cloud-outline"></ion-icon>
+        <div class="impact-value">{{ co2Evitado }} kg</div>
+        <div class="impact-label">CO₂ Evitado</div>
+      </div>
+    </div>
+
+    <!-- Security -->
+    <div class="security-card card">
+      <h3 class="card-title">Seguridad</h3>
+      <p class="security-desc">Actualiza tu contraseña regularmente para mantener tu cuenta segura</p>
+      <button class="btn-change-password">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        Cambiar Contraseña
+      </button>
+    </div>
+
+  </div>
+</div>

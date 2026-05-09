@@ -1,0 +1,7 @@
+{
+  "name": "eco-friendly-code",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

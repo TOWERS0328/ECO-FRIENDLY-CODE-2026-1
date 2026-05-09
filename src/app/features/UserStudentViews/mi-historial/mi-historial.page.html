@@ -1,0 +1,97 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="header-content">
+    <ion-icon name="time-outline"></ion-icon>
+    <div>
+      <h1 class="page-title">Mi Historial</h1>
+      <p class="page-subtitle">Revisa todas tus transacciones y reciclajes</p>
+    </div>
+  </div>
+</div>
+
+<!-- Filters Bar -->
+<div class="filters-bar card">
+  <div class="filter-group">
+    <span class="filter-label">
+      <ion-icon name="filter-outline"></ion-icon>
+      Tipo de Actividad
+    </span>
+    <div class="filter-tabs">
+      <button
+        *ngFor="let tipo of tiposFiltro"
+        class="filter-tab"
+        [class.active]="activeTipo === tipo.key"
+        (click)="setTipo(tipo.key)">
+        <ion-icon [name]="tipo.icon"></ion-icon>
+        {{ tipo.label }}
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-divider"></div>
+
+  <div class="filter-group">
+    <span class="filter-label">Estado</span>
+    <div class="filter-tabs">
+      <button
+        *ngFor="let estado of estadosFiltro"
+        class="filter-tab"
+        [class.active]="activeEstado === estado.key"
+        [class]="'filter-tab ' + (activeEstado === estado.key ? 'active' : '') + ' ' + estado.colorClass"
+        (click)="setEstado(estado.key)">
+        {{ estado.label }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Activity List -->
+<div class="activity-list">
+
+  <div
+    class="activity-item card"
+    *ngFor="let item of filteredHistory"
+    [class.reciclaje]="item.type === 'reciclaje'"
+    [class.premio]="item.type === 'premio'">
+
+    <!-- Icon -->
+    <div class="activity-icon" [class]="item.type">
+      <ion-icon [name]="item.type === 'reciclaje' ? 'cube-outline' : 'gift-outline'"></ion-icon>
+    </div>
+
+    <!-- Info -->
+    <div class="activity-info">
+      <div class="activity-header">
+        <h3 class="activity-title">{{ item.title }}</h3>
+        <span class="status-badge" [class]="item.status">
+          <ion-icon [name]="getStatusIcon(item.status)"></ion-icon>
+          {{ getStatusLabel(item.status) }}
+        </span>
+      </div>
+
+      <div class="activity-date">
+        <ion-icon name="calendar-outline"></ion-icon>
+        {{ item.date }}
+      </div>
+
+      <ul class="activity-details">
+        <li *ngFor="let detail of item.details">• {{ detail }}</li>
+      </ul>
+
+      <p class="activity-note" [class]="item.status">{{ item.note }}</p>
+    </div>
+
+    <!-- Points -->
+    <div class="activity-points" [class]="item.pointsClass">
+      {{ item.pointsLabel }}
+    </div>
+
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-history" *ngIf="filteredHistory.length === 0">
+    <ion-icon name="time-outline"></ion-icon>
+    <p>No hay actividad en esta categoría</p>
+  </div>
+
+</div>

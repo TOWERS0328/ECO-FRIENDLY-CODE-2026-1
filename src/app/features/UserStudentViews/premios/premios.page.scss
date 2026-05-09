@@ -1,0 +1,594 @@
+:host {
+  display: block;
+}
+
+// ── Page Header ────────────────────────────────────────
+.page-header {
+  background: linear-gradient(135deg, #7b2ff7 0%, #f107a3 100%);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px 20px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .header-left {
+    .page-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      opacity: 0.85;
+      margin: 0;
+    }
+  }
+
+  .header-points {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    padding: 14px 20px;
+    text-align: center;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+
+    .points-label {
+      display: block;
+      font-size: 12px;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .points-value {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      justify-content: center;
+
+      ion-icon {
+        font-size: 20px;
+        color: #ffd700;
+      }
+
+      strong {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+// ── Card base ──────────────────────────────────────────
+.card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+}
+
+// ── Search + Filter Bar ────────────────────────────────
+.search-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    padding: 12px;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .search-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 180px;
+    background: #f8f9f8;
+    border-radius: 10px;
+    padding: 10px 14px;
+    border: 1px solid #f0f0f0;
+    transition: border-color 0.2s;
+
+    &:focus-within {
+      border-color: #ce93d8;
+      background: white;
+    }
+
+    ion-icon {
+      font-size: 18px;
+      color: #9e9e9e;
+      flex-shrink: 0;
+    }
+
+    .search-input {
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #1a1a2e;
+      outline: none;
+      width: 100%;
+
+      &::placeholder { color: #bdbdbd; }
+    }
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    .filter-tab {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #e8e8e8;
+      background: white;
+      font-size: 13px;
+      font-weight: 500;
+      color: #616161;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+
+      &:hover:not(.active) {
+        border-color: #ce93d8;
+        color: #7b2ff7;
+      }
+
+      &.active {
+        background: linear-gradient(135deg, #7b2ff7 0%, #f107a3 100%);
+        color: white;
+        border-color: transparent;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .btn-carrito {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #7b2ff7 0%, #f107a3 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    position: relative;
+    white-space: nowrap;
+
+    &:hover { opacity: 0.9; }
+
+    ion-icon { font-size: 18px; }
+
+    .carrito-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: #ef4444;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+    }
+  }
+}
+
+// ── Content Grid ───────────────────────────────────────
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr 260px;
+  }
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Premios Grid ───────────────────────────────────────
+.premios-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+.premio-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  overflow: hidden;
+  transition: all 0.25s ease;
+
+  &:hover:not(.agotado) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(123, 47, 247, 0.1);
+    border-color: #ce93d8;
+  }
+
+  &.agotado {
+    opacity: 0.7;
+
+    .premio-image img {
+      filter: grayscale(40%);
+    }
+  }
+
+  .premio-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      height: 160px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.04);
+    }
+
+    .badge-agotado {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ef4444;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .badge-stock {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff9800;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+  }
+
+  .premio-body {
+    padding: 16px;
+
+    .premio-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 0 0 6px;
+    }
+
+    .premio-desc {
+      font-size: 13px;
+      color: #9e9e9e;
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+
+    .premio-category-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #f3e5f5;
+      color: #7b2ff7;
+      margin-bottom: 14px;
+    }
+
+    .premio-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid #f0f0f0;
+
+      .premio-points {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+
+        ion-icon {
+          font-size: 16px;
+          color: #7b2ff7;
+          vertical-align: middle;
+        }
+
+        strong {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 22px;
+          font-weight: 800;
+          color: #7b2ff7;
+          line-height: 1;
+        }
+
+        span {
+          font-size: 13px;
+          color: #9e9e9e;
+        }
+      }
+
+      .btn-agregar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 11px;
+        background: linear-gradient(135deg, #7b2ff7 0%, #f107a3 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        width: 100%;
+
+        &:hover:not(:disabled) { opacity: 0.9; }
+
+        &.in-carrito {
+          background: #f3e5f5;
+          color: #7b2ff7;
+          border: 1px solid #ce93d8;
+        }
+
+        &.no-disponible,
+        &:disabled {
+          background: #f0f0f0;
+          color: #9e9e9e;
+          cursor: not-allowed;
+          border: none;
+        }
+
+        ion-icon { font-size: 16px; }
+      }
+    }
+  }
+}
+
+// Empty state
+.empty-premios {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 24px;
+  gap: 12px;
+  color: #9e9e9e;
+
+  ion-icon { font-size: 48px; }
+  p { font-size: 15px; font-weight: 500; margin: 0; }
+}
+
+// ── Carrito Sidebar ────────────────────────────────────
+.carrito-sidebar {
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+
+  @media (max-width: 860px) {
+    display: none;
+
+    &.open { display: block; }
+  }
+
+  .carrito-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+
+    ion-icon {
+      font-size: 20px;
+      color: #7b2ff7;
+    }
+
+    h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 0;
+    }
+  }
+
+  .carrito-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+    gap: 10px;
+    color: #9e9e9e;
+
+    ion-icon { font-size: 48px; color: #ce93d8; }
+    p { font-size: 13px; font-weight: 500; margin: 0; color: #7b2ff7; }
+  }
+
+  .carrito-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .carrito-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #faf5ff;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #f3e5f5;
+
+      .carrito-item-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .carrito-item-info {
+        flex: 1;
+        min-width: 0;
+
+        .carrito-item-name {
+          display: block;
+          font-size: 13px;
+          font-weight: 600;
+          color: #1a1a2e;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-bottom: 3px;
+        }
+
+        .carrito-item-pts {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #7b2ff7;
+
+          ion-icon { font-size: 12px; }
+        }
+      }
+
+      .btn-remove {
+        background: #ffebee;
+        border: none;
+        border-radius: 8px;
+        padding: 7px;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+
+        &:hover { background: #ffcdd2; }
+
+        ion-icon { font-size: 15px; color: #e53935; }
+      }
+    }
+
+    .carrito-summary {
+      background: #faf5ff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #e1bee7;
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #616161;
+
+        &.total {
+          font-weight: 700;
+          color: #7b2ff7;
+          font-size: 14px;
+          padding-top: 6px;
+          border-top: 1px solid #e1bee7;
+          margin-top: 2px;
+        }
+
+        &.remaining {
+          font-size: 12px;
+          color: #4caf50;
+
+          &.insufficient {
+            color: #ef4444;
+          }
+        }
+      }
+    }
+
+    .btn-canjear {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 12px;
+      background: linear-gradient(135deg, #7b2ff7 0%, #f107a3 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 4px;
+
+      &:hover:not(:disabled) { opacity: 0.9; }
+
+      &:disabled {
+        background: #e0e0e0;
+        color: #9e9e9e;
+        cursor: not-allowed;
+      }
+
+      ion-icon { font-size: 18px; }
+    }
+  }
+}

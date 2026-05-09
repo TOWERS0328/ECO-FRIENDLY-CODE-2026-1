@@ -1,0 +1,11 @@
+// For information on how to create your own theme, please refer to:
+// https://ionicframework.com/docs/theming/
+
+// Fix para ion-router-outlet dentro de un div contenedor
+.content-wrapper ion-router-outlet {
+  position: static;
+  display: block;
+  height: auto;
+  min-height: unset;
+}
+

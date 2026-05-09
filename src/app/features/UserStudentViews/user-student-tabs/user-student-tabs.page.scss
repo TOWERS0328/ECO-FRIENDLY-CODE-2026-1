@@ -1,0 +1,452 @@
+// ═══════════════════════════════════════════════════════
+// Variables
+// ═══════════════════════════════════════════════════════
+:root {
+  --sidebar-width: 220px;
+  --primary: #00a651;        // Verde intenso como en la imagen
+  --primary-dark: #008f45;   // Verde más oscuro para hover/activo
+  --primary-light: #e6f7ef;  // Fondo verde muy claro
+  --bg: #f0fdf4;             // Fondo ligeramente verdoso como en la imagen
+  --card-bg: #ffffff;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border: #e5e7eb;
+  --hover-bg: #f0fdf4;       // Hover verde muy suave
+  --success: #00a651;
+  --warning: #f59e0b;
+  --error: #ef4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Ionic icons specific styles
+ion-icon {
+  display: inline-block !important;
+  font-family: 'Ionicons' !important;
+  speak: none !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  text-rendering: auto !important;
+  line-height: 1 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 1em !important;
+  min-height: 1em !important;
+}
+
+// ═══════════════════════════════════════════════════════
+// Layout Principal
+// ═══════════════════════════════════════════════════════
+.student-layout {
+  display: flex;
+  height: 100vh;
+  background: var(--bg);
+  // ← SIN overflow: hidden aquí
+}
+
+// ═══════════════════════════════════════════════════════
+// SIDEBAR (Navegación Lateral Izquierda)
+// ═══════════════════════════════════════════════════════
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--card-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+
+  // Header con logo
+  .sidebar-header {
+    padding: 20px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+        background: var(--primary);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+          font-size: 16px;
+          color: white;
+        }
+      }
+
+      .logo-text {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--text);
+        white-space: nowrap;
+      }
+    }
+
+    .sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      margin-left: auto;
+
+      &:hover {
+        background: var(--hover-bg);
+      }
+
+      ion-icon {
+        font-size: 24px;
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  // Navegación
+  .sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 4px;
+    overflow-y: auto;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      position: relative;
+
+      .nav-icon {
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        ion-icon {
+          font-size: 20px;
+          color: var(--text-secondary);
+        }
+      }
+
+      .nav-label {
+        flex: 1;
+      }
+
+      &:hover:not(.active) {
+        background: var(--hover-bg);
+        color: var(--primary);
+
+        .nav-icon ion-icon {
+          color: var(--primary);
+        }
+      }
+
+      // Estado ACTIVO — exactamente como en la imagen
+      &.active {
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0, 166, 81, 0.3);
+
+        .nav-icon ion-icon {
+          color: white;
+        }
+      }
+    }
+  }
+
+  // Footer del sidebar
+  .sidebar-footer {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+
+    .logout-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: none;
+      background: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.08);
+        color: var(--error);
+
+        ion-icon {
+          color: var(--error);
+        }
+      }
+
+      ion-icon {
+        font-size: 20px;
+        color: var(--text-secondary);
+      }
+    }
+  }
+}
+
+// Overlay para móvil
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+// ═══════════════════════════════════════════════════════
+// MAIN CONTENT
+// ═══════════════════════════════════════════════════════
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+// ═══════════════════════════════════════════════════════
+// TOP NAVBAR
+// ═══════════════════════════════════════════════════════
+.top-navbar {
+  height: 70px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+   flex-shrink: 0;
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    margin-right: auto;
+
+    &:hover {
+      background: var(--hover-bg);
+    }
+
+    ion-icon {
+      font-size: 24px;
+      color: var(--text);
+    }
+  }
+
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .action-btn {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: var(--hover-bg);
+      }
+
+      ion-icon {
+        font-size: 22px;
+        color: var(--text-secondary);
+      }
+
+      .badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        min-width: 18px;
+        height: 18px;
+        background: var(--error);
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+        border: 2px solid var(--card-bg);
+      }
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px 6px 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: var(--hover-bg);
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+          font-size: 20px;
+          color: white;
+        }
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--text);
+          line-height: 1.2;
+        }
+
+        .user-role {
+          font-size: 12px;
+          color: var(--text-muted);
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// FIX CRÍTICO: ion-router-outlet dentro de content-wrapper
+// ═══════════════════════════════════════════════════════
+.content-wrapper {
+  height: 100%;
+  padding: 32px;
+  overflow-y: auto;        // ← el scroll va AQUÍ, en el wrapper
+  background: var(--bg);
+  // ion-router-outlet fix está en global.scss
+}
+
+// ═══════════════════════════════════════════════════════
+// RESPONSIVE
+// ═══════════════════════════════════════════════════════
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+    .sidebar-header .sidebar-close {
+      display: block;
+    }
+  }
+
+  .student-layout.menu-open {
+    .sidebar {
+      transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+      display: block;
+    }
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .top-navbar {
+    justify-content: space-between;
+    padding: 0 20px;
+
+    .menu-toggle {
+      display: block;
+    }
+  }
+
+  .content-wrapper {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .top-navbar {
+    padding: 0 16px;
+
+    .navbar-actions {
+      gap: 12px;
+
+      .user-profile {
+        .user-info {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .content-wrapper {
+    padding: 16px;
+  }
+}

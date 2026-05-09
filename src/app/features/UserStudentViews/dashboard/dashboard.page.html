@@ -1,0 +1,128 @@
+<!-- Dashboard Content - Solo contenido, sin layout propio -->
+
+<!-- Loading State -->
+<div class="loading-state" *ngIf="isLoading">
+  <ion-spinner name="crescent" color="primary"></ion-spinner>
+  <p>Cargando tu dashboard...</p>
+</div>
+
+<!-- Error State -->
+<div class="error-state" *ngIf="error && !isLoading">
+  <ion-icon name="alert-circle" color="danger"></ion-icon>
+  <p>{{ error }}</p>
+  <button class="retry-btn" (click)="retryLoad()">
+    <ion-icon name="refresh"></ion-icon>
+    Reintentar
+  </button>
+</div>
+
+<!-- Content (solo cuando hay datos) -->
+<ng-container *ngIf="!isLoading && !error">
+
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div class="banner-content">
+      <h1>¡Bienvenido de vuelta, {{ userName }}! 🌱</h1>
+      <p>Continúa tu impacto ambiental y sigue acumulando puntos</p>
+      <div class="user-badge" *ngIf="userLevel > 0">
+        <ion-icon name="star"></ion-icon>
+        Nivel {{ userLevel }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <div class="stat-header">
+        <div class="stat-icon" [class]="stat.color">
+          <ion-icon [name]="stat.icon"></ion-icon>
+        </div>
+        <span class="stat-trend" [class]="stat.trendType">
+          {{ stat.trend }}
+        </span>
+      </div>
+      <div class="stat-value">
+        {{ stat.value | numberFormat:1:stat.unit }}
+      </div>
+      <div class="stat-label">{{ stat.label }}</div>
+    </div>
+  </div>
+
+  <!-- Two Columns Layout -->
+  <div class="dashboard-columns">
+
+    <!-- Recent Activity -->
+    <div class="activity-section card">
+      <div class="section-header">
+        <h2 class="section-title">Actividad Reciente</h2>
+        <a class="view-all" routerLink="/estudiante/historial">Ver todo</a>
+      </div>
+
+      <div class="activity-list" *ngIf="recentActivity.length > 0; else noActivity">
+        <div class="activity-item" *ngFor="let activity of recentActivity">
+          <div class="activity-icon" [class]="activity.materialType">
+            <ion-icon [name]="getMaterialIcon(activity.materialType)"></ion-icon>
+          </div>
+          <div class="activity-info">
+            <div class="activity-title">{{ activity.material }}</div>
+            <div class="activity-meta">
+              {{ activity.weight }} {{ activity.weightUnit }} • {{ activity.date | timeAgo }}
+            </div>
+          </div>
+          <div class="activity-status">
+            <span class="points">+{{ activity.points }} pts</span>
+            <span class="badge" [class]="activity.status">
+              {{ activity.status === 'approved' ? 'Aprobado' :
+                 activity.status === 'pending' ? 'Pendiente' : 'Rechazado' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noActivity>
+        <div class="empty-state">
+          <ion-icon name="sync-outline"></ion-icon>
+          <p>No tienes actividad reciente</p>
+          <button class="btn-primary" routerLink="/estudiante/reciclaje">
+            Registrar reciclaje
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Environmental Impact -->
+    <div class="impact-section card">
+      <h2 class="section-title">Tu Impacto Ambiental</h2>
+
+      <div class="impact-bars" *ngIf="environmentalImpact.length > 0">
+        <div class="impact-item" *ngFor="let item of environmentalImpact">
+          <div class="impact-label">
+            <span>{{ item.material }}</span>
+            <span>{{ item.amount }} {{ item.unit }}</span>
+          </div>
+          <div class="impact-bar">
+            <div class="impact-fill"
+                 [style.width.%]="item.percentage"
+                 [style.background]="item.color">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="achievement">
+        <div class="trophy-icon">
+          <ion-icon name="trophy"></ion-icon>
+        </div>
+        <p>
+          Estás en el <strong>Top {{ getRankPercentage() }}%</strong>
+          de tu institución
+        </p>
+        <span class="rank-detail">
+          Rank #{{ institutionRank }} de {{ totalInstitutionUsers }} estudiantes
+        </span>
+      </div>
+    </div>
+  </div>
+
+</ng-container>

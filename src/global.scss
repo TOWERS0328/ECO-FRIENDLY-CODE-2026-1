@@ -1,0 +1,96 @@
+@import "~@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@import "~@ionic/angular/css/display.css";
+
+// ============================================
+// FIX CRÍTICO: Layout con sidebar + scroll
+// ============================================
+
+// 1. html y body deben permitir scroll en los hijos
+html, body {
+  height: 100%;
+  // NO pongas overflow: hidden aquí
+}
+
+// 2. app-root debe ser flex para que tu layout ocupe todo
+app-root {
+  display: block;
+  height: 100%;
+}
+
+// 3. ion-app debe permitir que tu layout funcione
+ion-app {
+  display: flex !important;
+  flex-direction: column;
+  height: 100vh !important;
+  overflow: hidden; // ← Solo aquí, en el contenedor raíz de Ionic
+}
+
+// 4. Tu layout principal - altura controlada por flex
+.student-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;       // ← 100% del padre (ion-app), NO 100vh
+  overflow: hidden;   // ← El scroll NO va aquí
+}
+
+// 5. Main content - flex column para distribuir espacio
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  height: 100%;       // ← 100% del padre, NO 100vh
+  overflow: hidden;   // ← El scroll NO va aquí
+}
+
+// 6. Content-wrapper - AQUÍ SÍ va el scroll
+.content-wrapper {
+  flex: 1;            // ← Ocupa el espacio restante
+  padding: 32px;
+  overflow-y: auto;   // ← SCROLL VERTICAL AQUÍ
+  overflow-x: hidden;
+  background: var(--bg);
+  min-height: 0;      // ← CRÍTICO para que flex:1 funcione
+  -webkit-overflow-scrolling: touch;
+}
+
+// 7. Router outlet - flujo normal del documento
+ion-router-outlet {
+  position: relative !important;
+  display: flex !important;
+  flex: 1 !important;
+  min-height: 100% !important;
+  height: 100% !important;
+  contain: none !important;
+}
+
+// 8. Páginas hijas deben poder crecer libremente
+ion-router-outlet > * {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+ion-content {
+  display: flex !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+// Fix para scroll en toda la app
+html, body, ion-app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
