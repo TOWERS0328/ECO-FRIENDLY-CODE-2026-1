@@ -1,0 +1,70 @@
+<div class="coordi-layout" [class.menu-open]="mobileMenuOpen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo" (click)="goToLanding()">
+        <div class="logo-icon">
+          <ion-icon name="leaf-outline"></ion-icon>
+        </div>
+        <span class="logo-text">EcoFriendly Code</span>
+      </div>
+      <button class="sidebar-close" (click)="closeMobileMenu()" *ngIf="mobileMenuOpen" aria-label="Cerrar menú">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a *ngFor="let link of navLinks"
+         [routerLink]="link.path"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: link.exact}"
+         (click)="closeMobileMenu()">
+        <div class="nav-icon">
+          <ion-icon [name]="link.icon"></ion-icon>
+        </div>
+        <span class="nav-label">{{ link.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Overlay para móvil -->
+  <div class="sidebar-overlay" (click)="closeMobileMenu()" *ngIf="mobileMenuOpen"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="top-navbar">
+      <button class="menu-toggle" (click)="toggleMobileMenu()" aria-label="Abrir menú">
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+      <div class="navbar-actions">
+        <button class="action-btn notifications" aria-label="Notificaciones">
+          <ion-icon name="notifications-outline"></ion-icon>
+          <span class="badge">2</span>
+        </button>
+
+        <div class="user-profile">
+          <div class="avatar">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="user-info">
+            <span class="user-name">Coordinador Ambiental</span>
+            <span class="user-role">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <ion-router-outlet [animated]="false"></ion-router-outlet>
+    </div>
+  </main>
+</div>

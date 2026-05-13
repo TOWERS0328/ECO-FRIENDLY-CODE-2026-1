@@ -22,10 +22,16 @@ const routes: Routes = [
     loadChildren: () => import('./features/Auth/register/register.module').then(m => m.RegisterPageModule)
   },
 
-  // ── Estudiante (apunta al módulo de tabs de estudiante) ──
+  // ── Estudiante ───────────────────────────────────────
   {
     path: 'estudiante',
     loadChildren: () => import('./features/UserStudentViews/user-student-tabs/user-student-tabs.module').then(m => m.UserStudentTabsPageModule)
+  },
+
+  // ── Coordinador (tabs con sidebar) ───────────────────
+  {
+    path: 'coordinador',
+    loadChildren: () => import('./features/UserCordiViews/UserCoordi-tabs/User-Coordi-tabs.module').then(m => m.UserCoordiTabsPageModule)
   },
 ];
 

@@ -1,0 +1,119 @@
+<ion-content [fullscreen]="true" class="validate-recycling-content">
+
+  <!-- Blue Header -->
+  <div class="header-section blue">
+    <div class="header-content">
+      <div class="header-icon">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </div>
+      <div class="header-text">
+        <h1>Recycling Validation</h1>
+        <p>Review and approve student requests</p>
+      </div>
+    </div>
+    <div class="header-badge" *ngIf="counts.pending > 0">
+      <span class="badge-number">{{ counts.pending }}</span>
+      <span class="badge-label">Pending</span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-section">
+    <button
+      *ngFor="let tab of tabs"
+      class="tab-btn"
+      [class.active]="activeTab === tab.status"
+      (click)="changeTab(tab.status)">
+      {{ tab.label }} ({{ getTabCount(tab.countKey) }})
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Loading requests...</p>
+  </div>
+
+  <!-- Requests List -->
+  <div class="requests-list" *ngIf="!loading">
+
+    <div class="request-card" *ngFor="let request of filteredRequests">
+
+      <!-- Card Header -->
+      <div class="request-header">
+        <div class="student-info">
+          <div class="student-avatar">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="student-text">
+            <span class="student-name">{{ request.student.name }}</span>
+            <span class="student-code">{{ request.student.code }}</span>
+          </div>
+        </div>
+
+        <div class="request-meta">
+          <span class="status-badge" [class.pending]="request.status === 'Pending'" [class.approved]="request.status === 'Approved'" [class.rejected]="request.status === 'Rejected'">
+            <ion-icon name="time-outline" *ngIf="request.status === 'Pending'"></ion-icon>
+            <ion-icon name="checkmark-outline" *ngIf="request.status === 'Approved'"></ion-icon>
+            <ion-icon name="close-outline" *ngIf="request.status === 'Rejected'"></ion-icon>
+            {{ request.status }}
+          </span>
+          <div class="total-points">
+            <span class="points-label">Total Points</span>
+            <span class="points-value">+{{ request.totalPoints }} pts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="request-date">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <span>{{ formatDate(request.date) }}</span>
+      </div>
+
+      <!-- Materials -->
+      <div class="materials-section">
+        <div class="materials-header">
+          <ion-icon name="cube-outline"></ion-icon>
+          <span>Registered Materials</span>
+        </div>
+        <div class="materials-list">
+          <div class="material-item" *ngFor="let material of request.materials">
+            <div class="material-info">
+              <span class="material-name">• {{ material.name }}: {{ material.weightKg }} kg</span>
+            </div>
+            <span class="material-points">{{ material.points }} pts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions (only for pending) -->
+      <div class="request-actions" *ngIf="request.status === 'Pending'">
+        <ion-button
+          expand="block"
+          class="btn-approve"
+          (click)="approveRequest(request)">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          Approve
+        </ion-button>
+        <ion-button
+          expand="block"
+          class="btn-reject"
+          (click)="rejectRequest(request)">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Reject
+        </ion-button>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredRequests.length === 0">
+      <ion-icon name="checkmark-done-outline" class="empty-icon"></ion-icon>
+      <h3>No {{ activeTab.toLowerCase() }} requests</h3>
+      <p>New requests will appear here</p>
+    </div>
+
+  </div>
+
+</ion-content>

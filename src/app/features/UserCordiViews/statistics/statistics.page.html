@@ -1,0 +1,311 @@
+<ion-content [fullscreen]="true" class="stats-content">
+
+  <!-- ══════════════════════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon-wrap">
+        <ion-icon name="bar-chart-outline"></ion-icon>
+      </div>
+      <div>
+        <h1>System Statistics</h1>
+        <p>Analytics &amp; recycling program metrics</p>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Year selector -->
+      <div class="year-selector">
+        <ion-icon name="calendar-outline" class="selector-icon"></ion-icon>
+        <select class="year-select" [value]="selectedYear "
+                aria-label="Select year"
+                (change)="onYearChange(+$any($event.target).value)">
+          <option *ngFor="let yr of availableYears" [value]="yr">{{ yr }}</option>
+        </select>
+        <ion-icon name="chevron-down-outline" class="chevron-icon"></ion-icon>
+      </div>
+
+      <!-- Export buttons -->
+      <ion-button class="btn-export excel" (click)="exportExcel()" [disabled]="isExporting || isLoading">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
+        Excel
+      </ion-button>
+
+      <ion-button class="btn-export pdf" (click)="exportPdf()" [disabled]="isExporting || isLoading">
+        <ion-icon name="print-outline" slot="start"></ion-icon>
+        PDF
+      </ion-button>
+
+      <!-- Report panel toggle -->
+      <ion-button class="btn-report" (click)="showReportPanel = !showReportPanel" [disabled]="isLoading">
+        <ion-icon name="options-outline" slot="start"></ion-icon>
+        Report
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       REPORT PANEL (collapsible)
+  ══════════════════════════════════════════════════════ -->
+  <div class="report-panel" *ngIf="showReportPanel">
+    <div class="panel-inner">
+      <p class="panel-title">
+        <ion-icon name="options-outline"></ion-icon>
+        Configure Report Sections
+      </p>
+      <div class="panel-checks">
+        <label class="check-item" *ngFor="let key of ['metrics','monthly-trend','top-students','waste-categories']">
+          <input type="checkbox" [(ngModel)]="$any(reportSections)[key]">
+          <span>{{ key | titlecase }}</span>
+        </label>
+      </div>
+      <div class="panel-actions">
+        <ion-button size="small" class="btn-export excel" (click)="exportExcel()">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          Export Excel
+        </ion-button>
+        <ion-button size="small" class="btn-export pdf" (click)="exportPdf()">
+          <ion-icon name="print-outline" slot="start"></ion-icon>
+          Export PDF
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       LOADING
+  ══════════════════════════════════════════════════════ -->
+  <div class="loading-state" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading statistics...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- ══════════════════════════════════════════════════════
+         METRIC CARDS
+    ══════════════════════════════════════════════════════ -->
+    <div class="metrics-grid">
+      <div class="metric-card" *ngFor="let card of metricCards">
+        <div class="metric-icon-wrap" [style.background]="card.bgColor">
+          <ion-icon [name]="card.icon" [style.color]="card.iconColor"></ion-icon>
+        </div>
+        <div class="metric-body">
+          <span class="metric-title">{{ card.title }}</span>
+          <span class="metric-value">{{ card.value }}</span>
+          <span class="metric-subtitle">{{ card.subtitle }}</span>
+        </div>
+        <div class="metric-badge" [class.up]="card.change > 0" [class.down]="card.change < 0">
+          <ion-icon [name]="card.change > 0 ? 'trending-up-outline' : 'trending-down-outline'"></ion-icon>
+          {{ card.change > 0 ? '+' : '' }}{{ card.change }}%
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         SUMMARY PILLS  (year-level KPIs)
+    ══════════════════════════════════════════════════════ -->
+    <div class="summary-pills">
+      <div class="pill">
+        <ion-icon name="leaf-outline"></ion-icon>
+        <span class="pill-label">Total recycled {{ selectedYear }}</span>
+        <strong>{{ getTotalRecycledForYear() | number:'1.0-0' }} kg</strong>
+      </div>
+      <div class="pill">
+        <ion-icon name="trending-up-outline"></ion-icon>
+        <span class="pill-label">Avg. monthly growth</span>
+        <strong>{{ getAvgMonthlyGrowth() }}%</strong>
+      </div>
+      <div class="pill">
+        <ion-icon name="star-outline"></ion-icon>
+        <span class="pill-label">Peak month</span>
+        <strong>{{ getPeakMonth() }}</strong>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         ROW 1  ·  Trend line  +  Top Students
+    ══════════════════════════════════════════════════════ -->
+    <div class="grid-2-1">
+
+      <!-- Trend line chart -->
+      <div class="chart-card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <ion-icon name="trending-up-outline" class="ch-icon green"></ion-icon>
+            <h3>Monthly Trend — {{ selectedYear }}</h3>
+          </div>
+          <div class="card-head-kpis">
+            <div class="kpi-mini">
+              <span class="kpi-lbl">Avg/month</span>
+              <span class="kpi-val green">{{ (getTotalRecycledForYear() / 12) | number:'1.0-0' }} kg</span>
+            </div>
+            <div class="kpi-mini">
+              <span class="kpi-lbl">Growth</span>
+              <span class="kpi-val green">+{{ getAvgMonthlyGrowth() }}%</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-area h300">
+          <canvas #trendChart></canvas>
+        </div>
+      </div>
+
+      <!-- Top students -->
+      <div class="chart-card top-card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <ion-icon name="trophy-outline" class="ch-icon gold"></ion-icon>
+            <h3>Top Students</h3>
+          </div>
+        </div>
+        <div class="students-list">
+          <div class="student-row" *ngFor="let s of topStudents; trackBy: trackById">
+
+            <div class="rank-badge"
+                 [class.gold]="s.position === 1"
+                 [class.silver]="s.position === 2"
+                 [class.bronze]="s.position === 3">
+              {{ s.position }}
+            </div>
+
+            <div class="student-avatar-wrap">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+
+            <div class="student-meta">
+              <span class="s-name">{{ s.name }}</span>
+              <span class="s-kg">{{ s.recycledKg }} kg recycled</span>
+            </div>
+
+            <div class="student-pts">
+              <span class="pts-val">{{ s.recyclingPoints }}</span>
+              <span class="pts-lbl">pts</span>
+            </div>
+
+          </div>
+          <div class="empty-students" *ngIf="topStudents.length === 0">
+            <ion-icon name="trophy-outline"></ion-icon>
+            <p>No data available</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         ROW 2  ·  Growth bars  +  Donut categories
+    ══════════════════════════════════════════════════════ -->
+    <div class="grid-1-1">
+
+      <!-- Monthly growth bar chart -->
+      <div class="chart-card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <ion-icon name="stats-chart-outline" class="ch-icon purple"></ion-icon>
+            <h3>Monthly Growth %</h3>
+          </div>
+        </div>
+        <div class="chart-area h260">
+          <canvas #growthChart></canvas>
+        </div>
+      </div>
+
+      <!-- Donut + legend -->
+      <div class="chart-card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <ion-icon name="pie-chart-outline" class="ch-icon blue"></ion-icon>
+            <h3>Waste by Category</h3>
+          </div>
+        </div>
+        <div class="donut-layout">
+          <div class="donut-wrap">
+            <canvas #categoryChart></canvas>
+          </div>
+          <div class="donut-legend">
+            <div class="legend-row"
+                 *ngFor="let cat of wasteByCategory; trackBy: trackByCategory">
+              <span class="legend-dot" [style.background]="cat.color"></span>
+              <div class="legend-text">
+                <span class="legend-name">{{ cat.category }}</span>
+                <span class="legend-kg">{{ cat.amount }} kg</span>
+              </div>
+              <span class="legend-pct">{{ cat.percentage }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         ROW 3  ·  Stacked bar (category breakdown per month)
+    ══════════════════════════════════════════════════════ -->
+    <div class="chart-card full-width-card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <ion-icon name="layers-outline" class="ch-icon orange"></ion-icon>
+          <h3>Category Breakdown by Month — {{ selectedYear }}</h3>
+        </div>
+        <span class="card-badge">Full year</span>
+      </div>
+      <div class="chart-area h280">
+        <canvas #heatmapChart></canvas>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         ROW 4  ·  Summary table
+    ══════════════════════════════════════════════════════ -->
+    <div class="chart-card full-width-card" *ngIf="stats">
+      <div class="card-head">
+        <div class="card-head-left">
+          <ion-icon name="list-outline" class="ch-icon teal"></ion-icon>
+          <h3>Monthly Detail — {{ selectedYear }}</h3>
+        </div>
+        <ion-button size="small" class="btn-export excel" (click)="exportExcel()">
+          <ion-icon name="download-outline" slot="start"></ion-icon>
+          Export
+        </ion-button>
+      </div>
+      <div class="table-scroll">
+        <table class="detail-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Recycled (kg)</th>
+              <th>Active Students</th>
+              <th>Growth %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of stats.monthlyTrend">
+              <td class="td-month">{{ row.month }}</td>
+              <td><strong>{{ row.recycledKg | number }}</strong></td>
+              <td>{{ row.activeStudents }}</td>
+              <td>
+                <span class="growth-pill"
+                      [class.pos]="row.growth >= 0"
+                      [class.neg]="row.growth < 0">
+                  {{ row.growth > 0 ? '+' : '' }}{{ row.growth }}%
+                </span>
+              </td>
+              <td>
+                <span class="status-dot" [class.high]="row.recycledKg >= 1000"
+                      [class.mid]="row.recycledKg >= 700 && row.recycledKg < 1000"
+                      [class.low]="row.recycledKg < 700">
+                  {{ row.recycledKg >= 1000 ? 'High' : row.recycledKg >= 700 ? 'Normal' : 'Low' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </ng-container>
+
+</ion-content>

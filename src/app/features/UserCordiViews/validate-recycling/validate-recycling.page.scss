@@ -1,0 +1,452 @@
+// ═══════════════════════════════════════════════════════
+// VARIABLES - Exactas del Figma
+// ═══════════════════════════════════════════════════════
+:root {
+  --val-primary: #3b82f6;
+  --val-primary-dark: #2563eb;
+  --val-bg: #f0fdf4;
+  --val-text: #1e3a5f;
+  --val-text-secondary: #64748b;
+  --val-border: #e2e8f0;
+  --val-white: #ffffff;
+  --val-success: #00c853;
+  --val-danger: #ff5252;
+  --val-warning: #f59e0b;
+}
+
+// ═══════════════════════════════════════════════════════
+// LAYOUT
+// ═══════════════════════════════════════════════════════
+.validar-reciclaje-content {
+  --background: #f0fdf4; // Verde muy claro como en tu imagen
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 24px;
+  --padding-bottom: 24px;
+}
+
+// ═══════════════════════════════════════════════════════
+// HEADER AZUL - Exacto al Figma
+// ═══════════════════════════════════════════════════════
+.header-section {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 24px;
+      color: white;
+    }
+  }
+
+  .header-text {
+    h1 {
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 1;
+
+    .badge-numero {
+      display: block;
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    .badge-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// TABS - Naranja/Amarillo activo como en Figma
+// ═══════════════════════════════════════════════════════
+.tabs-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: white;
+  border-radius: 12px;
+  padding: 6px;
+  border: 1px solid var(--val-border);
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+
+    &:hover {
+      background: #f1f5f9;
+      color: #3b82f6;
+    }
+
+    &.active {
+      background: #f59e0b; // Naranja/Amarillo como en Figma
+      color: white;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// SOLICITUD CARD
+// ═══════════════════════════════════════════════════════
+.solicitudes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.solicitud-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--val-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.solicitud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.estudiante-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .estudiante-avatar {
+    width: 40px;
+    height: 40px;
+    background: #dbeafe;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 20px;
+      color: #3b82f6;
+    }
+  }
+
+  .estudiante-text {
+    display: flex;
+    flex-direction: column;
+
+    .estudiante-nombre {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--val-text);
+    }
+
+    .estudiante-codigo {
+      font-size: 12px;
+      color: var(--val-text-secondary);
+      margin-top: 2px;
+    }
+  }
+}
+
+.solicitud-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+
+  .estado-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &.pendiente {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    &.aprobada {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    &.rechazada {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+
+  .total-puntos {
+    text-align: right;
+
+    .puntos-label {
+      display: block;
+      font-size: 11px;
+      color: var(--val-text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .puntos-valor {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--val-success);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// FECHA
+// ═══════════════════════════════════════════════════════
+.solicitud-fecha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--val-text-secondary);
+  font-size: 13px;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// MATERIALES - Fondo azul claro como en Figma
+// ═══════════════════════════════════════════════════════
+.materiales-section {
+  background: #eff6ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+
+  .materiales-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--val-primary);
+    font-size: 13px;
+    font-weight: 600;
+
+    ion-icon {
+      font-size: 16px;
+    }
+  }
+
+  .materiales-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .material-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .material-nombre {
+      font-size: 13px;
+      color: var(--val-text);
+    }
+
+    .material-puntos {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--val-text-secondary);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// ACCIONES - Botones verde y rojo
+// ═══════════════════════════════════════════════════════
+.solicitud-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  .btn-aprobar {
+    --background: #00c853;
+    --color: white;
+    --border-radius: 10px;
+    height: 44px;
+    font-weight: 600;
+    text-transform: none;
+    font-size: 14px;
+    --box-shadow: 0 2px 8px rgba(0, 200, 83, 0.25);
+    margin: 0;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+
+  .btn-rechazar {
+    --background: #ff5252;
+    --color: white;
+    --border-radius: 10px;
+    height: 44px;
+    font-weight: 600;
+    text-transform: none;
+    font-size: 14px;
+    --box-shadow: 0 2px 8px rgba(255, 82, 82, 0.25);
+    margin: 0;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// LOADING & EMPTY
+// ═══════════════════════════════════════════════════════
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+
+  ion-spinner {
+    --color: #3b82f6;
+  }
+
+  p {
+    color: var(--val-text-secondary);
+    margin-top: 12px;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+
+  .empty-icon {
+    font-size: 48px;
+    color: #cbd5e1;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--val-text);
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--val-text-secondary);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// RESPONSIVE
+// ═══════════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+
+    .header-content {
+      flex-direction: column;
+    }
+
+    .header-badge {
+      width: 100%;
+    }
+  }
+
+  .tabs-section {
+    flex-wrap: wrap;
+
+    .tab-btn {
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+  }
+
+  .solicitud-header {
+    flex-direction: column;
+    gap: 12px;
+
+    .solicitud-meta {
+      align-items: flex-start;
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .solicitud-actions {
+    grid-template-columns: 1fr;
+  }
+}

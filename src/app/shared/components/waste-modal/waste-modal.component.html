@@ -1,0 +1,144 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <!-- Name -->
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Waste Name *</ion-label>
+        <div class="input-wrapper" [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched">
+          <ion-input
+            formControlName="name"
+            placeholder="e.g., PET Plastic"
+            type="text"
+            maxlength="100">
+          </ion-input>
+        </div>
+        <ion-note color="danger" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+          <span *ngIf="form.get('name')?.errors?.['required']">Name is required</span>
+          <span *ngIf="form.get('name')?.errors?.['minlength']">Minimum 3 characters</span>
+        </ion-note>
+      </ion-item>
+    </div>
+
+    <!-- Category + Points -->
+    <div class="form-row two-cols">
+      <div class="col">
+        <ion-item class="input-item" lines="none">
+          <ion-label position="stacked">Category *</ion-label>
+          <div class="input-wrapper">
+            <ion-select formControlName="category" interface="popover">
+              <ion-select-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-item>
+      </div>
+      <div class="col">
+        <ion-item class="input-item" lines="none">
+          <ion-label position="stacked">Points per kg *</ion-label>
+          <div class="input-wrapper" [class.invalid]="form.get('pointsPerKg')?.invalid && form.get('pointsPerKg')?.touched">
+            <ion-input
+              formControlName="pointsPerKg"
+              type="number"
+              min="1"
+              max="1000"
+              placeholder="5">
+            </ion-input>
+          </div>
+          <ion-note color="danger" *ngIf="form.get('pointsPerKg')?.invalid && form.get('pointsPerKg')?.touched">
+            <span *ngIf="form.get('pointsPerKg')?.errors?.['required']">Required</span>
+            <span *ngIf="form.get('pointsPerKg')?.errors?.['min']">Minimum 1 point</span>
+          </ion-note>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Status (edit only) -->
+    <div class="form-row full-width" *ngIf="mode === 'edit'">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Status</ion-label>
+        <div class="input-wrapper">
+          <ion-select formControlName="status" interface="popover">
+            <ion-select-option value="Active">Active</ion-select-option>
+            <ion-select-option value="Inactive">Inactive</ion-select-option>
+          </ion-select>
+        </div>
+      </ion-item>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Image</ion-label>
+
+        <div class="image-preview-container" *ngIf="imagePreview">
+          <div class="image-preview">
+            <img [src]="imagePreview" alt="Waste image preview">
+            <button type="button" class="btn-remove-image" (click)="removeImage()" aria-label="Remove image">
+              <ion-icon name="close-circle"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-image"
+          (click)="fileInput.click()"
+          *ngIf="!imagePreview"
+          aria-label="Upload image">
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+          Upload Image
+        </button>
+        <input
+          #fileInput
+          type="file"
+          accept="image/*"
+          style="display: none;"
+          (change)="onImageSelected($event)">
+
+        <ion-note class="image-hint">Max 5MB. JPG, PNG, WebP</ion-note>
+      </ion-item>
+    </div>
+
+    <!-- Description -->
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Description *</ion-label>
+        <div class="input-wrapper" [class.invalid]="form.get('description')?.invalid && form.get('description')?.touched">
+          <ion-textarea
+            formControlName="description"
+            placeholder="Describe the type of waste..."
+            rows="3"
+            maxlength="500">
+          </ion-textarea>
+        </div>
+        <ion-note color="danger" *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+          <span *ngIf="form.get('description')?.errors?.['required']">Description is required</span>
+          <span *ngIf="form.get('description')?.errors?.['minlength']">Minimum 10 characters</span>
+        </ion-note>
+      </ion-item>
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-row actions-row">
+      <ion-button expand="block" fill="outline" class="btn-cancel" (click)="dismiss()">
+        Cancel
+      </ion-button>
+      <ion-button expand="block" type="submit" class="btn-create" [disabled]="form.invalid || form.pending">
+        <ion-spinner name="crescent" *ngIf="form.pending" slot="start"></ion-spinner>
+        {{ buttonText }}
+      </ion-button>
+    </div>
+
+  </form>
+</ion-content>

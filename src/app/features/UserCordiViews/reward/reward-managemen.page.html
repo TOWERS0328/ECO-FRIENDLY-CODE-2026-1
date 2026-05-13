@@ -1,0 +1,104 @@
+<ion-content [fullscreen]="true" class="reward-management-content">
+
+  <!-- Purple/Pink Header -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-icon">
+        <ion-icon name="gift-outline"></ion-icon>
+      </div>
+      <div class="header-text">
+        <h1>Reward Management</h1>
+        <p>Manage the rewards catalog</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar-section">
+    <div class="search-container">
+      <ion-icon name="search-outline" class="search-icon"></ion-icon>
+      <ion-input
+        [(ngModel)]="searchTerm"
+        (ionInput)="onSearch($event)"
+        placeholder="Search rewards..."
+        class="search-input">
+      </ion-input>
+    </div>
+
+    <ion-button
+      class="btn-create"
+      (click)="openCreateModal()">
+      <ion-icon name="add-outline" slot="start"></ion-icon>
+      Create Reward
+    </ion-button>
+  </div>
+
+  <!-- Rewards Grid -->
+  <div class="rewards-grid" *ngIf="!loading">
+
+    <div class="reward-card" *ngFor="let reward of filteredRewards">
+
+      <!-- Status badge -->
+      <div class="status-badge" [style.background]="getStatusColor(reward.status).bg" [style.color]="getStatusColor(reward.status).text">
+        {{ reward.status }}
+      </div>
+
+      <!-- Info -->
+      <div class="reward-info">
+        <h3 class="reward-name">{{ reward.name }}</h3>
+        <p class="reward-desc">{{ reward.description }}</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="reward-stats">
+        <div class="stat">
+          <span class="stat-label">Points</span>
+          <span class="stat-value">{{ reward.points }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Stock</span>
+          <span class="stat-value">{{ reward.stock }}</span>
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div class="reward-category">
+        <span class="cat-badge">{{ reward.category }}</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="reward-actions">
+        <ion-button
+          fill="clear"
+          class="btn-edit"
+          (click)="openEditModal(reward)">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Edit
+        </ion-button>
+        <ion-button
+          fill="clear"
+          class="btn-delete"
+          (click)="confirmDelete(reward)">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Delete
+        </ion-button>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredRewards.length === 0">
+      <ion-icon name="search-outline" class="empty-icon"></ion-icon>
+      <h3>No rewards found</h3>
+      <p>Try another search term or create a new one</p>
+    </div>
+
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Loading rewards...</p>
+  </div>
+
+</ion-content>

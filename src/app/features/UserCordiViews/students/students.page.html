@@ -1,0 +1,192 @@
+<<ion-content [fullscreen]="true" class="estudiantes-content">
+
+  <!-- ── Green Header ── -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-icon">
+        <ion-icon name="people-outline"></ion-icon>
+      </div>
+      <div class="header-text">
+        <h1>Student Management</h1>
+        <p>Manage and monitor program participants</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Stats ── -->
+  <div class="stats-row" *ngIf="stats">
+    <div class="stat-card">
+      <div class="stat-icon-wrap blue">
+        <ion-icon name="people-outline"></ion-icon>
+      </div>
+      <div class="stat-data">
+        <span class="stat-value">{{ stats.totalStudents }}</span>
+        <span class="stat-label">Total Students</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrap green">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </div>
+      <div class="stat-data">
+        <span class="stat-value">{{ stats.active }}</span>
+        <span class="stat-label">Active</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrap purple">
+        <ion-icon name="trophy-outline"></ion-icon>
+      </div>
+      <div class="stat-data">
+        <span class="stat-value">{{ stats.totalPoints | number }}</span>
+        <span class="stat-label">Total Points</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrap orange">
+        <ion-icon name="leaf-outline"></ion-icon>
+      </div>
+      <div class="stat-data">
+        <span class="stat-value">{{ stats.totalKg | number:'1.1-1' }} kg</span>
+        <span class="stat-label">Total Recycled</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toolbar: Search + Button ── -->
+  <div class="toolbar-section">
+    <div class="search-container">
+      <ion-icon name="search-outline" class="search-icon"></ion-icon>
+      <ion-input
+        [value]="searchCtrl.value ?? ''"
+        (ionInput)="onSearchChange($event)"
+        placeholder="Search by name, email or code..."
+        class="search-input">
+      </ion-input>
+    </div>
+    <ion-button class="btn-crear" (click)="openCreate()">
+      <ion-icon name="person-add-outline" slot="start"></ion-icon>
+      New Student
+    </ion-button>
+  </div>
+
+  <!-- ── Loading ── -->
+  <div class="loading-container" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading students...</p>
+  </div>
+
+  <!-- ── Content ── -->
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="students.length === 0">
+      <div class="empty-icon">
+        <ion-icon name="people-outline"></ion-icon>
+      </div>
+      <h3>No students found</h3>
+      <p>Try a different search term or register a new student</p>
+      <ion-button class="btn-crear" (click)="openCreate()">
+        <ion-icon name="person-add-outline" slot="start"></ion-icon>
+        New Student
+      </ion-button>
+    </div>
+
+    <!-- Desktop: Table -->
+    <div class="table-wrapper ion-hide-sm-down" *ngIf="students.length > 0">
+      <table class="estudiantes-table">
+        <thead>
+          <tr>
+            <th>STUDENT</th>
+            <th>CODE</th>
+            <th>POINTS</th>
+            <th>RECYCLED KG</th>
+            <th>RECYCLINGS</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of students; trackBy: trackById">
+            <td>
+              <div class="student-cell">
+                <div class="student-avatar">
+                  <ion-icon name="person-outline"></ion-icon>
+                </div>
+                <div class="student-info">
+                  <span class="student-name">{{ student.firstName }} {{ student.lastName }}</span>
+                  <span class="student-email">{{ student.email }}</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="code-text">{{ student.code }}</span></td>
+            <td><span class="points-text">{{ student.totalPoints }}</span></td>
+            <td><span class="kg-text">{{ student.recycledKg }} kg</span></td>
+            <td>{{ student.totalRecyclings }}</td>
+            <td>
+              <span class="estado-badge"
+                    [class.activo]="student.status === 'Active'"
+                    [class.inactivo]="student.status === 'Inactive'">
+                {{ student.status }}
+              </span>
+            </td>
+            <td>
+              <ion-button fill="clear" class="btn-ver" (click)="openDetail(student)">
+                View Details
+              </ion-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile: Cards -->
+    <div class="mobile-cards ion-hide-md-up" *ngIf="students.length > 0">
+      <div class="estudiante-card"
+           *ngFor="let student of students; trackBy: trackById"
+           (click)="openDetail(student)">
+
+        <span class="estado-badge"
+              [class.activo]="student.status === 'Active'"
+              [class.inactivo]="student.status === 'Inactive'">
+          {{ student.status }}
+        </span>
+
+        <div class="card-header-row">
+          <div class="card-avatar">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-name">{{ student.firstName }} {{ student.lastName }}</span>
+            <span class="card-code">{{ student.code }}</span>
+          </div>
+        </div>
+
+        <div class="card-stats">
+          <div class="cs">
+            <span class="cs-label">Points</span>
+            <span class="cs-value">{{ student.totalPoints }}</span>
+          </div>
+          <div class="cs">
+            <span class="cs-label">Recycled</span>
+            <span class="cs-value">{{ student.recycledKg }} kg</span>
+          </div>
+          <div class="cs">
+            <span class="cs-label">Recyclings</span>
+            <span class="cs-value">{{ student.totalRecyclings }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</ion-content>
+
+<!-- FAB mobile -->
+<<ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-hide-md-up">
+  <ion-fab-button (click)="openCreate()">
+    <ion-icon name="add-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

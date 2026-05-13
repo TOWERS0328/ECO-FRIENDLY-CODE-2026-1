@@ -1,0 +1,226 @@
+:host {
+  --background: white;
+}
+
+:host ion-header {
+  &.ion-no-border {
+    --border-width: 0;
+  }
+}
+
+:host ion-toolbar {
+  --background: white !important;
+  --color: #1B5E20 !important;
+  --min-height: 56px;
+  --padding-start: 24px;
+  --padding-end: 16px;
+
+  ion-title {
+    font-weight: 700;
+    font-size: 20px;
+    color: #1B5E20 !important;
+    padding: 0;
+  }
+}
+
+:host ion-content {
+  --background: white !important;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 16px;
+  --padding-bottom: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  width: 100%;
+
+  &.full-width {
+    display: block;
+  }
+
+  &.three-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  &.actions-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+}
+
+.input-item {
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+  --highlight-height: 0;
+
+  // Forzar que el label se comporte como block
+  &::part(native) {
+    padding: 0;
+  }
+
+  ion-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: block;
+    transform: none !important;
+    position: static !important;
+  }
+
+  // Fix para labels stacked en Ionic
+  &[class*="label-stacked"] ion-label,
+  ion-label[position="stacked"] {
+    transform: none !important;
+    position: relative !important;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .input-wrapper {
+    background: white;
+    border-radius: 10px;
+    border: 1.5px solid #E0E0E0;
+    width: 100%;
+
+    &:focus-within {
+      border-color: #00C853;
+    }
+
+    &.invalid {
+      border-color: #ef4444;
+    }
+
+    ion-input,
+    ion-textarea,
+    ion-select {
+      --padding-start: 12px;
+      --padding-end: 12px;
+      --padding-top: 12px;
+      --padding-bottom: 12px;
+      min-height: 48px;
+      --placeholder-color: #999;
+      --placeholder-opacity: 1;
+      font-size: 15px;
+      color: #333;
+    }
+
+    ion-textarea {
+      min-height: 80px;
+    }
+  }
+}
+
+ion-note {
+  font-size: 12px;
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+.image-preview-container {
+  margin-bottom: 12px;
+}
+
+.image-preview {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #E0E0E0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .btn-remove-image {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    color: #ef4444;
+    font-size: 20px;
+    padding: 0;
+
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.btn-image {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1.5px dashed #00C853;
+  background: white;
+  color: #00C853;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.image-hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+:host .btn-cancel {
+  --background: white;
+  --color: #666;
+  --border-radius: 10px;
+  height: 48px;
+  --border-width: 1.5px;
+  --border-color: #E0E0E0;
+  font-weight: 600;
+}
+
+:host .btn-save {
+  --background: #00C853;
+  --color: white;
+  --border-radius: 10px;
+  height: 48px;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  :host ion-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+
+  .form-row.three-cols,
+  .form-row.actions-row {
+    grid-template-columns: 1fr;
+  }
+}

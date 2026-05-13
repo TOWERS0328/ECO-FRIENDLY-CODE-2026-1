@@ -1,0 +1,272 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!--              DETAIL MODE               -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="detalle-wrapper" *ngIf="isDetail && student">
+
+    <!-- Avatar header -->
+    <div class="detalle-hero">
+      <div class="hero-avatar">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+      <div class="hero-info">
+        <h2>{{ student.firstName }} {{ student.lastName }}</h2>
+        <span class="hero-codigo">{{ student.code }}</span>
+        <span class="estado-badge"
+              [class.activo]="student.status === 'Active'"
+              [class.inactivo]="student.status === 'Inactive'">
+          {{ student.status }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Highlight stats -->
+    <div class="hero-stats">
+      <div class="hs-item">
+        <ion-icon name="trophy-outline" class="hs-icon gold"></ion-icon>
+        <span class="hs-value">{{ student.totalPoints }}</span>
+        <span class="hs-label">Points</span>
+      </div>
+      <div class="hs-sep"></div>
+      <div class="hs-item">
+        <ion-icon name="scale-outline" class="hs-icon blue"></ion-icon>
+        <span class="hs-value">{{ student.recycledKg }} kg</span>
+        <span class="hs-label">Recycled</span>
+      </div>
+      <div class="hs-sep"></div>
+      <div class="hs-item">
+        <ion-icon name="refresh-outline" class="hs-icon green"></ion-icon>
+        <span class="hs-value">{{ student.totalRecyclings }}</span>
+        <span class="hs-label">Recyclings</span>
+      </div>
+    </div>
+
+    <!-- Info grid -->
+    <div class="info-section">
+      <p class="section-title">Contact Information</p>
+      <div class="info-grid">
+
+        <div class="info-item">
+          <div class="info-icon-wrap">
+            <ion-icon name="mail-outline"></ion-icon>
+          </div>
+          <div>
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ student.email }}</span>
+          </div>
+        </div>
+
+        <div class="info-item" *ngIf="student.phone">
+          <div class="info-icon-wrap">
+            <ion-icon name="call-outline"></ion-icon>
+          </div>
+          <div>
+            <span class="info-label">Phone</span>
+            <span class="info-value">{{ student.phone }}</span>
+          </div>
+        </div>
+
+        <div class="info-item" *ngIf="student.major">
+          <div class="info-icon-wrap">
+            <ion-icon name="school-outline"></ion-icon>
+          </div>
+          <div>
+            <span class="info-label">Major</span>
+            <span class="info-value">{{ student.major }}</span>
+          </div>
+        </div>
+
+        <div class="info-item" *ngIf="student.semester">
+          <div class="info-icon-wrap">
+            <ion-icon name="library-outline"></ion-icon>
+          </div>
+          <div>
+            <span class="info-label">Semester</span>
+            <span class="info-value">{{ student.semester }}th</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon-wrap">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </div>
+          <div>
+            <span class="info-label">Registration Date</span>
+            <span class="info-value">{{ formatDate(student.registrationDate) }}</span>
+          </div>
+        </div>
+
+        <div class="info-item" *ngIf="student.lastActivity">
+          <div class="info-icon-wrap">
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+          <div>
+            <span class="info-label">Last Activity</span>
+            <span class="info-value">{{ formatDate(student.lastActivity!) }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Admin actions -->
+    <div class="admin-section">
+      <p class="section-title">Actions</p>
+      <div class="admin-actions">
+
+        <ion-button expand="block" class="btn-editar-modal" (click)="openEdit()">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Edit Student
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          [class.btn-inhabilitar]="student.status === 'Active'"
+          [class.btn-habilitar]="student.status === 'Inactive'"
+          (click)="toggleStatus()">
+          <ion-icon name="ban-outline" slot="start" *ngIf="student.status === 'Active'"></ion-icon>
+          <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="student.status === 'Inactive'"></ion-icon>
+          {{ student.status === 'Active' ? 'Disable Student' : 'Enable Student' }}
+        </ion-button>
+
+        <ion-button expand="block" class="btn-eliminar-modal" (click)="delete()">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Delete Student
+        </ion-button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!--         CREATE / EDIT MODE             -->
+  <!-- ═══════════════════════════════════════ -->
+  <form [formGroup]="form" (ngSubmit)="save()" *ngIf="!isDetail">
+
+    <!-- Personal info -->
+    <div class="form-section-label">Personal Information</div>
+
+    <div class="form-row two-cols">
+      <div class="col">
+        <ion-item class="input-item" lines="none">
+          <ion-label position="stacked">First Name *</ion-label>
+          <div class="input-wrapper">
+            <ion-input formControlName="firstName" placeholder="María"></ion-input>
+          </div>
+        </ion-item>
+        <div class="error-msg" *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched">
+          Minimum 2 characters
+        </div>
+      </div>
+      <div class="col">
+        <ion-item class="input-item" lines="none">
+          <ion-label position="stacked">Last Name *</ion-label>
+          <div class="input-wrapper">
+            <ion-input formControlName="lastName" placeholder="García"></ion-input>
+          </div>
+        </ion-item>
+        <div class="error-msg" *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">
+          Minimum 2 characters
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Email Address *</ion-label>
+        <div class="input-wrapper">
+          <ion-input formControlName="email" type="email" placeholder="student@university.edu"></ion-input>
+        </div>
+      </ion-item>
+      <div class="error-msg" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+        Invalid email address
+      </div>
+    </div>
+
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Phone</ion-label>
+        <div class="input-wrapper">
+          <ion-input formControlName="phone" type="tel" placeholder="3001234567"></ion-input>
+        </div>
+      </ion-item>
+    </div>
+
+    <!-- Academic info -->
+    <div class="form-section-label">Academic Information</div>
+
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Student Code *</ion-label>
+        <div class="input-wrapper">
+          <ion-input formControlName="code" placeholder="EST-2024-0001"></ion-input>
+        </div>
+      </ion-item>
+      <div class="error-msg" *ngIf="form.get('code')?.invalid && form.get('code')?.touched">
+        Student code is required
+      </div>
+    </div>
+
+    <div class="form-row full-width">
+      <ion-item class="input-item" lines="none">
+        <ion-label position="stacked">Major</ion-label>
+        <div class="input-wrapper">
+          <ion-select formControlName="major" placeholder="Select major" interface="popover">
+            <ion-select-option *ngFor="let m of majors" [value]="m">{{ m }}</ion-select-option>
+          </ion-select>
+        </div>
+      </ion-item>
+    </div>
+
+    <div class="form-row two-cols">
+      <div class="col">
+        <ion-item class="input-item" lines="none">
+          <ion-label position="stacked">Semester</ion-label>
+          <div class="input-wrapper">
+            <ion-input formControlName="semester" type="number" min="1" max="12" placeholder="1"></ion-input>
+          </div>
+        </ion-item>
+        <div class="error-msg" *ngIf="form.get('semester')?.invalid && form.get('semester')?.touched">
+          Must be between 1 and 12
+        </div>
+      </div>
+      <div class="col">
+        <ion-item class="input-item" lines="none">
+          <ion-label position="stacked">Status</ion-label>
+          <div class="input-wrapper">
+            <ion-select formControlName="status" interface="popover">
+              <ion-select-option value="Active">Active</ion-select-option>
+              <ion-select-option value="Inactive">Inactive</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-row actions-row">
+      <ion-button expand="block" fill="outline" class="btn-cancelar" (click)="dismiss()">
+        Cancel
+      </ion-button>
+      <ion-button expand="block" type="submit" class="btn-guardar" [disabled]="form.invalid">
+        <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+        {{ submitLabel }}
+      </ion-button>
+    </div>
+
+  </form>
+
+</ion-content>

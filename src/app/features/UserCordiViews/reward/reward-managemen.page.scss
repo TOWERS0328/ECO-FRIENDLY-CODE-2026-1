@@ -1,0 +1,447 @@
+// ═══════════════════════════════════════════════════════
+// VARIABLES
+// ═══════════════════════════════════════════════════════
+:host {
+  --premio-primary: #a855f7;
+  --premio-primary-dark: #7c3aed;
+  --premio-secondary: #ec4899;
+  --premio-bg: #f0fdf4;
+  --premio-text: #1e3a5f;
+  --premio-text-secondary: #6b7280;
+  --premio-border: #e5e7eb;
+  --premio-white: #ffffff;
+}
+
+
+// ═══════════════════════════════════════════════════════
+// LAYOUT
+// ═══════════════════════════════════════════════════════
+.reward-management-content {
+  --background: #f0fdf4;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 24px;
+  --padding-bottom: 24px;
+}
+
+
+// ═══════════════════════════════════════════════════════
+// HEADER
+// ═══════════════════════════════════════════════════════
+.header-section {
+  background: linear-gradient(135deg, #c084fc 0%, #ec4899 100%);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(192, 132, 252, 0.3);
+  overflow: hidden;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 24px;
+      color: white;
+    }
+  }
+
+  .header-text {
+    h1 {
+      margin: 0 0 4px;
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0;
+      color: rgba(255,255,255,.85);
+      font-size: 14px;
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// TOOLBAR
+// ═══════════════════════════════════════════════════════
+.toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+
+  .search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 0 18px;
+    height: 46px;
+    border: 1.5px solid var(--premio-border);
+
+    &:focus-within {
+      border-color: #c084fc;
+      box-shadow: 0 0 0 3px rgba(192,132,252,.1);
+    }
+
+    .search-icon {
+      font-size: 18px;
+      color: #9ca3af;
+      margin-right: 12px;
+    }
+
+    .search-input {
+      --padding-start: 0;
+      --padding-end: 0;
+      font-size: 14px;
+    }
+  }
+
+  .btn-create {
+    --background: linear-gradient(135deg, #c084fc 0%, #ec4899 100%);
+    --border-radius: 12px;
+    --padding-start: 22px;
+    --padding-end: 22px;
+    --box-shadow: 0 4px 12px rgba(192,132,252,.25);
+
+    height: 46px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: none;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// GRID
+// ═══════════════════════════════════════════════════════
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+
+// ═══════════════════════════════════════════════════════
+// CARD
+// ═══════════════════════════════════════════════════════
+.reward-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--premio-border);
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  transition: .25s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// STATUS
+// ═══════════════════════════════════════════════════════
+.status-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  padding: 4px 12px;
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+// ═══════════════════════════════════════════════════════
+// INFO
+// ═══════════════════════════════════════════════════════
+.reward-info {
+  padding-top: 10px;
+  margin-bottom: 16px;
+
+  .reward-name {
+    margin: 0 0 6px;
+
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--premio-text);
+  }
+
+  .reward-desc {
+    margin: 0;
+
+    font-size: 13px;
+    color: var(--premio-text-secondary);
+    line-height: 1.4;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════
+.reward-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+  margin-bottom: 16px;
+
+  padding: 12px;
+
+  background: #faf5ff;
+  border-radius: 10px;
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+
+    .stat-label {
+      font-size: 11px;
+      color: #a855f7;
+      font-weight: 600;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--premio-text);
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// CATEGORY
+// ═══════════════════════════════════════════════════════
+.reward-category {
+  margin-bottom: 16px;
+
+  .cat-badge {
+    display: inline-block;
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    background: #f3e8ff;
+    border: 1px solid #e9d5ff;
+
+    color: #7c3aed;
+    font-size: 11px;
+    font-weight: 600;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════
+.reward-actions {
+  margin-top: auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 8px;
+
+  .btn-edit {
+    --background: #3b82f6;
+    --color: white;
+    --border-radius: 8px;
+
+    height: 40px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-transform: none;
+
+    margin: 0;
+  }
+
+  .btn-delete {
+    --background: #ef4444;
+    --color: white;
+    --border-radius: 8px;
+
+    height: 40px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-transform: none;
+
+    margin: 0;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// EMPTY
+// ═══════════════════════════════════════════════════════
+.empty-state {
+  grid-column: 1 / -1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 60px;
+
+  text-align: center;
+
+  .empty-icon {
+    font-size: 48px;
+    color: #d1d5db;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    margin: 0 0 8px;
+
+    color: var(--premio-text);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+
+    color: var(--premio-text-secondary);
+    font-size: 14px;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// LOADING
+// ═══════════════════════════════════════════════════════
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+  padding: 60px;
+
+  ion-spinner {
+    --color: #c084fc;
+  }
+
+  p {
+    color: var(--premio-text-secondary);
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ANIMATION
+// ═══════════════════════════════════════════════════════
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reward-card {
+  animation: fadeInUp .3s ease forwards;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * .04}s;
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// RESPONSIVE
+// ═══════════════════════════════════════════════════════
+@media (max-width: 1024px) {
+
+  .reward-management-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+
+  .rewards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .toolbar-section {
+    flex-direction: column;
+
+    .search-container,
+    .btn-create {
+      width: 100%;
+    }
+  }
+
+  .rewards-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .header-section {
+    padding: 20px;
+
+    .header-text h1 {
+      font-size: 18px;
+    }
+
+    .header-text p {
+      font-size: 12px;
+    }
+  }
+
+  .reward-card {
+    padding: 14px;
+  }
+
+}

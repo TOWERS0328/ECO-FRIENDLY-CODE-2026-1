@@ -1,0 +1,191 @@
+<div class="dashboard-container">
+
+  <!-- HEADER AZUL -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="header-title">
+        Panel de Coordinador Ambiental
+        <span class="header-icon">🌍</span>
+      </h1>
+      <p class="header-subtitle">Gestiona el sistema de reciclaje de tu institución</p>
+    </div>
+  </div>
+
+  <!-- LOADING STATE -->
+  <div class="loading-container" *ngIf="cargando">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="error-container" *ngIf="error && !cargando">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>{{ error }}</p>
+    <button class="btn-reintentar" (click)="cargarDatos()">Reintentar</button>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <ng-container *ngIf="!cargando && !error && stats">
+
+    <!-- CARDS DE ESTADÍSTICAS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon icon-clock">
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+          <span class="stat-badge badge-urgente">Urgente</span>
+        </div>
+        <div class="stat-body">
+          <h2 class="stat-number">{{ stats.solicitudesPendientes }}</h2>
+          <p class="stat-label">Solicitudes Pendientes</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon icon-users">
+            <ion-icon name="people-outline"></ion-icon>
+          </div>
+          <span class="stat-badge badge-activos">Activos</span>
+        </div>
+        <div class="stat-body">
+          <h2 class="stat-number">{{ stats.estudiantesRegistrados }}</h2>
+          <p class="stat-label">Estudiantes Registrados</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon icon-box">
+            <ion-icon name="cube-outline"></ion-icon>
+          </div>
+          <span class="stat-badge badge-mes">Este mes</span>
+        </div>
+        <div class="stat-body">
+          <h2 class="stat-number">{{ stats.totalReciclado }} <span class="stat-unit">kg</span></h2>
+          <p class="stat-label">Total Reciclado</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon icon-trend">
+            <ion-icon name="trending-up-outline"></ion-icon>
+          </div>
+          <span class="stat-badge badge-trend">{{ stats.tendencia.aprobados }}</span>
+        </div>
+        <div class="stat-body">
+          <h2 class="stat-number">{{ stats.reciclajesAprobados }}</h2>
+          <p class="stat-label">Reciclajes Aprobados</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL: 2 COLUMNAS -->
+    <div class="main-grid">
+
+      <!-- COLUMNA IZQUIERDA: Solicitudes por Validar -->
+      <div class="left-column">
+        <div class="section-card solicitudes-card">
+          <div class="section-header">
+            <h3 class="section-title">Solicitudes por Validar</h3>
+            <button class="link-ver-todas" (click)="verTodasSolicitudes()">
+              Ver todas →
+            </button>
+          </div>
+
+          <!-- Empty state -->
+          <div class="empty-solicitudes" *ngIf="solicitudesPendientes.length === 0">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <p>No hay solicitudes pendientes</p>
+          </div>
+
+          <div class="solicitudes-list">
+            <div class="solicitud-item" *ngFor="let solicitud of solicitudesPendientes">
+              <div class="solicitud-info">
+                <div class="solicitud-meta">
+                  <span class="solicitud-nombre">{{ solicitud.estudianteNombre }}</span>
+                  <span class="solicitud-tiempo">{{ solicitud.fechaSolicitud | date:'short' }}</span>
+                </div>
+                <div class="solicitud-materiales">
+                  <div class="material-tag">
+                    <ion-icon name="ellipse"></ion-icon>
+                    {{ solicitud.tipoResiduo }}: {{ solicitud.peso }} kg
+                  </div>
+                  <div class="material-tag" *ngIf="solicitud.categoriaResiduo">
+                    <ion-icon name="pricetag-outline"></ion-icon>
+                    {{ solicitud.categoriaResiduo }}
+                  </div>
+                </div>
+              </div>
+              <div class="solicitud-puntos">
+                <span class="puntos-badge">+{{ solicitud.puntosCalculados }} pts</span>
+              </div>
+              <div class="solicitud-actions">
+                <button class="btn-aprobar" (click)="aprobarSolicitud(solicitud.id)">
+                  Aprobar
+                </button>
+                <button class="btn-rechazar" (click)="rechazarSolicitud(solicitud.id)">
+                  Rechazar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: Acciones Rápidas + Alertas -->
+      <div class="right-column">
+
+        <div class="section-card acciones-card">
+          <h3 class="section-title">Acciones Rápidas</h3>
+          <div class="acciones-list">
+            <button class="accion-btn btn-crear" (click)="irAGestionResiduos()">
+              <div class="accion-icon">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </div>
+              <span>Crear Residuo</span>
+            </button>
+            <button class="accion-btn btn-validar" (click)="irAValidarReciclaje()">
+              <div class="accion-icon">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+              </div>
+              <span>Validar Reciclajes</span>
+            </button>
+            <button class="accion-btn btn-estadisticas" (click)="irAEstadisticas()">
+              <div class="accion-icon">
+                <ion-icon name="bar-chart-outline"></ion-icon>
+              </div>
+              <span>Ver Estadísticas</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="section-card alertas-card">
+          <h3 class="section-title">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Alertas
+          </h3>
+
+          <!-- Empty state -->
+          <div class="empty-alertas" *ngIf="alertas.length === 0">
+            <p>Sin alertas por ahora</p>
+          </div>
+
+          <div class="alertas-list">
+            <div class="alerta-item" *ngFor="let alerta of alertas" [class]="'alerta-' + alerta.tipo">
+              <div class="alerta-content">
+                <h4 class="alerta-titulo">{{ alerta.titulo }}</h4>
+                <p class="alerta-descripcion">{{ alerta.descripcion }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

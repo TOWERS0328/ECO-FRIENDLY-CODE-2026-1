@@ -1,0 +1,414 @@
+// ═══════════════════════════════════════════════════════
+// VARIABLES
+// ═══════════════════════════════════════════════════════
+:root {
+  --eco-primary: #10b981;
+  --eco-primary-dark: #059669;
+  --eco-primary-light: #d1fae5;
+  --eco-bg: #f0fdf4;
+  --eco-text: #111827;
+  --eco-text-secondary: #6b7280;
+  --eco-border: #e5e7eb;
+  --eco-white: #ffffff;
+  --eco-danger: #ef4444;
+  --eco-danger-light: #fee2e2;
+  --eco-warning: #f59e0b;
+  --eco-info: #3b82f6;
+}
+
+// ═══════════════════════════════════════════════════════
+// LAYOUT
+// ═══════════════════════════════════════════════════════
+.waste-management-content {
+  --background: var(--eco-bg);
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 24px;
+  --padding-bottom: 24px;
+}
+
+// ═══════════════════════════════════════════════════════
+// HEADER SECTION - CORREGIDO
+// ═══════════════════════════════════════════════════════
+.header-section {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 26px;
+      color: white !important;
+    }
+  }
+
+  .header-text {
+    h1 {
+      color: white !important;
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.02em;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.95) !important;
+      font-size: 14px;
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// TOOLBAR SECTION
+// ═══════════════════════════════════════════════════════
+.toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+
+  .search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: var(--eco-white);
+    border-radius: 12px;
+    padding: 0 18px;
+    height: 46px;
+    border: 1.5px solid var(--eco-border);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+
+    &:focus-within {
+      border-color: var(--eco-primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1), 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .search-icon {
+      font-size: 18px;
+      color: #9ca3af;
+      margin-right: 12px;
+      transition: color 0.2s;
+    }
+
+    &:focus-within .search-icon {
+      color: var(--eco-primary);
+    }
+
+    .search-input {
+      --padding-start: 0;
+      --padding-end: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+      font-size: 14px;
+      color: var(--eco-text);
+      font-weight: 400;
+    }
+  }
+
+  .btn-create {
+    --background: #10b981;
+    --background-hover: #059669;
+    --border-radius: 12px;
+    --color: white;
+    height: 46px;
+    --padding-start: 22px;
+    --padding-end: 22px;
+    font-weight: 600;
+    text-transform: none;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    --box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    margin: 0;
+
+    ion-icon {
+      font-size: 18px;
+      margin-right: 6px;
+      color: white;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// TABLE CONTAINER
+// ═══════════════════════════════════════════════════════
+.table-container {
+  background: var(--eco-white);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--eco-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 100px;
+  padding: 14px 24px;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--eco-border);
+
+  > div {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+}
+
+.table-body {
+  .table-row {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr 1fr 1fr 100px;
+    padding: 14px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    align-items: center;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: #f8fafc;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// WASTE INFO
+// ═══════════════════════════════════════════════════════
+.waste-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.waste-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 20px;
+    color: white;
+  }
+}
+
+.waste-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.waste-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--eco-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.waste-desc {
+  font-size: 12px;
+  color: var(--eco-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ═══════════════════════════════════════════════════════
+// BADGES
+// ═══════════════════════════════════════════════════════
+.badge-category,
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-status {
+  &.active {
+    background-color: #d1fae5;
+    color: #059669;
+  }
+
+  &.inactive {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// POINTS
+// ═══════════════════════════════════════════════════════
+.points-value {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--eco-text);
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════
+.col-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.btn-action {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+
+  ion-icon {
+    font-size: 18px;
+  }
+
+  &.btn-edit {
+    --color: #3b82f6;
+    --ripple-color: rgba(59, 130, 246, 0.2);
+
+    &:hover {
+      --background: rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  &.btn-delete {
+    --color: #ef4444;
+    --ripple-color: rgba(239, 68, 68, 0.2);
+
+    &:hover {
+      --background: rgba(239, 68, 68, 0.1);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// LOADING & EMPTY STATE
+// ═══════════════════════════════════════════════════════
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 48px;
+
+  ion-spinner {
+    --color: var(--eco-primary);
+  }
+
+  p {
+    color: var(--eco-text-secondary);
+    margin-top: 12px;
+    font-size: 14px;
+  }
+}
+
+.empty-state {
+  padding: 60px 48px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 64px;
+    color: #d1d5db;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--eco-text);
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--eco-text-secondary);
+    margin: 0;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// RESPONSIVE
+// ═══════════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .waste-management-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+
+  .toolbar-section {
+    flex-direction: column;
+
+    .search-container,
+    .btn-create {
+      width: 100%;
+    }
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .table-body .table-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .col-actions {
+    justify-content: flex-start;
+  }
+}

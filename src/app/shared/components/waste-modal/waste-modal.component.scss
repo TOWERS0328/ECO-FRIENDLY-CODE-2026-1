@@ -1,0 +1,262 @@
+ion-header {
+  &.ion-no-border {
+    --border-width: 0;
+  }
+}
+
+ion-toolbar {
+  --background: white !important;
+  --color: #1B5E20 !important;
+  --min-height: 56px;
+  --padding-start: 24px;
+  --padding-end: 16px;
+
+  ion-title {
+    font-weight: 700;
+    font-size: 20px;
+    color: #1B5E20 !important;
+    padding: 0;
+  }
+
+  ion-buttons {
+    ion-button {
+      --color: #9E9E9E;
+      --ripple-color: transparent;
+      width: 32px;
+      height: 32px;
+      margin: 0;
+
+      ion-icon {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+ion-content {
+  --background: white !important;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 16px;
+  --padding-bottom: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  width: 100%;
+
+  &.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  &.actions-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+}
+
+.input-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+  --border-color: transparent;
+  margin-bottom: 0;
+
+  ion-label {
+    font-weight: 600;
+    color: #333333;
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .input-wrapper {
+    background: white;
+    border-radius: 10px;
+    border: 1.5px solid #E0E0E0;
+    transition: all 0.2s ease;
+    overflow: hidden;
+
+    &:focus-within {
+      border-color: #00C853;
+      box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.08);
+    }
+
+    &.invalid {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+    }
+  }
+
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --padding-start: 14px;
+    --padding-end: 14px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --placeholder-color: #BDBDBD;
+    --placeholder-opacity: 1;
+    --color: #333333;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  ion-textarea {
+    min-height: 90px;
+  }
+
+  ion-select::part(icon) {
+    color: #666666;
+    opacity: 1;
+  }
+
+  ion-note {
+    font-size: 12px;
+    margin-top: 4px;
+    padding-left: 2px;
+  }
+}
+
+.image-preview-container {
+  margin: 8px 0;
+}
+
+.image-preview {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #E0E0E0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .btn-remove-image {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ef4444;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    ion-icon {
+      color: white;
+      font-size: 14px;
+    }
+  }
+}
+
+.btn-image {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1.5px dashed #00C853;
+  background: white;
+  color: #00C853;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+
+  &:hover {
+    background: #E8F5E9;
+    border-style: solid;
+  }
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+.image-hint {
+  display: block;
+  font-size: 11px;
+  color: #9E9E9E;
+  margin-top: 6px;
+}
+
+.btn-cancel {
+  --background: white;
+  --color: #666666;
+  --border-radius: 10px;
+  height: 48px;
+  --border-width: 1.5px;
+  --border-color: #E0E0E0;
+  --border-style: solid;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 14px;
+  --box-shadow: none;
+  --ripple-color: rgba(0, 0, 0, 0.05);
+  margin: 0;
+
+  &:hover {
+    --background: #F5F5F5;
+  }
+}
+
+.btn-create {
+  --background: #00C853;
+  --color: white;
+  --border-radius: 10px;
+  height: 48px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 14px;
+  --box-shadow: 0 4px 12px rgba(0, 200, 83, 0.25);
+  --ripple-color: rgba(255, 255, 255, 0.2);
+  margin: 0;
+
+  &:hover {
+    --background: #00B248;
+  }
+
+  &[disabled] {
+    --background: #BDBDBD;
+    --box-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 480px) {
+  ion-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+
+  .form-row.two-cols,
+  .form-row.actions-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
